@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AITrustAudit.com — Become an AI Security Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #f5f0e8;
+    --bg2:        #ede8de;
+    --surface:    #faf7f2;
+    --ink:        #1a1610;
+    --ink2:       #3d3528;
+    --muted:      #8c7e6a;
+    --border:     #d4c9b4;
+    --border2:    #bfb39a;
+    --accent:     #c8401a;
+    --accent2:    #1a6cc8;
+    --accent3:    #1a8c5a;
+    --accent4:    #8c1ac8;
+    --gold:       #c8961a;
+    --mono:       'DM Mono', monospace;
+    --serif:      'DM Serif Display', serif;
+    --sans:       'Outfit', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink2);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Blueprint grid overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(26,22,16,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(26,22,16,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 900;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 60px;
+    background: rgba(245,240,232,0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--ink);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-mark {
+    width: 28px; height: 28px;
+    border: 2px solid var(--accent);
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1.5px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: 8px 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: #a83314; transform: translateY(-1px); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 80px 2.5rem 4rem;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 4rem;
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 28px; height: 1.5px;
+    background: var(--accent);
+    display: block;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2.6rem, 5vw, 4.2rem);
+    color: var(--ink);
+    line-height: 1.08;
+    letter-spacing: -1px;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+  .hero-sub strong { color: var(--ink2); font-weight: 600; }
+
+  /* PERSONA SELECTOR */
+  .persona-selector {
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+
+  .persona-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .persona-btns { display: flex; gap: 0; margin-bottom: 1.5rem; }
+
+  .persona-btn {
+    flex: 1;
+    padding: 14px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .persona-btn:not(:last-child) { border-right: none; }
+  .persona-btn.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .persona-btn:hover:not(.active) { background: var(--bg2); color: var(--ink); }
+
+  .persona-btn .icon { display: block; font-size: 1.4rem; margin-bottom: 4px; }
+  .persona-btn .sub { font-size: 11px; opacity: 0.7; display: block; }
+
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 13px 28px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: #a83314; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(200,64,26,0.25); }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--ink2);
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 13px;
+    padding: 13px 28px;
+    border: 1.5px solid var(--border2);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* HERO RIGHT — CAREER MAP VISUAL */
+  .hero-right {
+    position: relative; z-index: 2;
+    animation: fadeUp 0.5s 0.25s ease both;
+  }
+
+  .career-card {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 6px 6px 0 var(--border2);
+  }
+
+  .career-card-header {
+    background: var(--ink);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .career-card-header span {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .career-card-header strong {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .career-steps { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+
+  .career-step {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+
+  .step-num {
+    width: 28px; height: 28px;
+    border: 1.5px solid var(--border2);
+    display: grid; place-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+    background: var(--bg);
+  }
+
+  .step-num.done {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: #fff;
+  }
+  .step-num.active-step {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .step-content { flex: 1; }
+  .step-title { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .step-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  .step-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    margin-top: 5px;
+    background: rgba(200,64,26,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(200,64,26,0.2);
+  }
+  .step-tag.blue { background: rgba(26,108,200,0.08); color: var(--accent2); border-color: rgba(26,108,200,0.2); }
+  .step-tag.green { background: rgba(26,140,90,0.08); color: var(--accent3); border-color: rgba(26,140,90,0.2); }
+
+  .career-card-footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .progress-bar-wrap { flex: 1; margin-right: 12px; }
+  .progress-label { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 5px; }
+  .progress-bar { height: 4px; background: var(--bg2); border-radius: 0; }
+  .progress-fill { height: 100%; width: 35%; background: var(--accent); transition: width 0.5s; }
+  .progress-pct { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 500; }
+
+  /* ─── SECTION ─── */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 5rem 2.5rem; position: relative; z-index: 1; }
+
+  .section-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  .section-eyebrow::before { content: '§'; color: var(--accent); font-size: 13px; }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--ink);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+  h2 em { color: var(--accent); font-style: italic; }
+
+  .section-intro { color: var(--muted); max-width: 580px; font-size: 15px; margin-bottom: 3rem; }
+
+  hr.divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* ─── PERSONA TRACKS ─── */
+  .tracks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 700px) { .tracks-grid { grid-template-columns: 1fr; } }
+
+  .track-card {
+    background: var(--surface);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .track-card:hover { background: var(--bg); }
+  .track-card::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 20px; right: 20px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    opacity: 0.5;
+  }
+
+  .track-icon { font-size: 2.5rem; margin-bottom: 1.2rem; display: block; }
+
+  .track-card h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.3px;
+  }
+  .track-card .track-from {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+  .track-card p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+
+  .track-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+  .track-skill {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--ink2);
+  }
+  .track-skill.new {
+    background: rgba(200,64,26,0.07);
+    border-color: rgba(200,64,26,0.2);
+    color: var(--accent);
+  }
+
+  .track-timeline {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .track-timeline strong { color: var(--accent); }
+
+  .track-cta {
+    margin-top: 1.5rem;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    border-bottom: 1.5px solid var(--accent);
+    padding-bottom: 2px;
+    transition: gap 0.2s;
+    cursor: pointer;
+  }
+  .track-cta:hover { gap: 12px; }
+
+  /* ─── ROADMAP ─── */
+  .roadmap { position: relative; }
+
+  .roadmap-phase {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 2rem;
+    margin-bottom: 0;
+    position: relative;
+  }
+
+  @media (max-width: 600px) { .roadmap-phase { grid-template-columns: 1fr; } }
+
+  .roadmap-phase::before {
+    content: '';
+    position: absolute;
+    left: 178px; top: 0; bottom: 0;
+    width: 1.5px;
+    background: var(--border);
+  }
+  @media (max-width: 600px) { .roadmap-phase::before { display: none; } }
+
+  .phase-label-col {
+    padding-top: 1.5rem;
+    text-align: right;
+    padding-right: 2rem;
+    position: relative;
+  }
+
+  .phase-label-col::after {
+    content: '';
+    position: absolute;
+    right: -5px; top: 28px;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+    z-index: 2;
+  }
+
+  .phase-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .phase-name {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--ink);
+    display: block;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .phase-duration {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    display: block;
+  }
+
+  .phase-content { padding: 1.5rem 0 3rem; }
+
+  .phase-cards { display: flex; flex-direction: column; gap: 12px; }
+
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .phase-card:hover { border-color: var(--border2); transform: translateX(4px); }
+
+  .phase-card-icon {
+    width: 40px; height: 40px;
+    display: grid; place-items: center;
+    font-size: 1.3rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .phase-card-body { flex: 1; }
+  .phase-card-body h4 {
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .phase-card-body p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+  .phase-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pct { font-family: var(--mono); font-size: 10px; padding: 2px 8px; background: var(--bg2); border: 1px solid var(--border); color: var(--muted); }
+  .pct.accent { background: rgba(200,64,26,0.07); border-color: rgba(200,64,26,0.2); color: var(--accent); }
+  .pct.blue { background: rgba(26,108,200,0.07); border-color: rgba(26,108,200,0.2); color: var(--accent2); }
+  .pct.green { background: rgba(26,140,90,0.07); border-color: rgba(26,140,90,0.2); color: var(--accent3); }
+
+  .phase-card-meta {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .effort {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    display: block;
+    text-align: right;
+  }
+  .effort strong { color: var(--ink2); display: block; font-size: 13px; }
+
+  /* ─── CONTENT TYPES ─── */
+  .content-bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  @media (max-width: 800px) { .content-bento { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .content-bento { grid-template-columns: 1fr; } }
+
+  .bento-card {
+    background: var(--surface);
+    padding: 2rem;
+    transition: background 0.2s;
+    cursor: default;
+  }
+  .bento-card:hover { background: var(--bg); }
+  .bento-card.span2 { grid-column: span 2; display: flex; gap: 2rem; align-items: flex-start; }
+  @media (max-width: 800px) { .bento-card.span2 { grid-column: span 1; flex-direction: column; } }
+
+  .bento-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .bento-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    margin-bottom: 0.75rem;
+    background: rgba(200,64,26,0.08);
+    color: var(--accent);
+    border: 1px solid rgba(200,64,26,0.15);
+  }
+  .bento-tag.blue { background: rgba(26,108,200,0.08); color: var(--accent2); border-color: rgba(26,108,200,0.15); }
+  .bento-tag.green { background: rgba(26,140,90,0.08); color: var(--accent3); border-color: rgba(26,140,90,0.15); }
+  .bento-tag.gold { background: rgba(200,150,26,0.08); color: var(--gold); border-color: rgba(200,150,26,0.15); }
+  .bento-tag.purple { background: rgba(140,26,200,0.08); color: var(--accent4); border-color: rgba(140,26,200,0.15); }
+
+  .bento-card h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+  .bento-card p { font-size: 12px; color: var(--muted); line-height: 1.65; }
+
+  .bento-visual {
+    flex-shrink: 0;
+    width: 200px;
+  }
+  .mini-roadmap { display: flex; flex-direction: column; gap: 8px; }
+  .mini-step {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; color: var(--muted);
+  }
+  .mini-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border2);
+    flex-shrink: 0;
+  }
+  .mini-dot.done { background: var(--accent3); }
+  .mini-dot.now  { background: var(--accent); box-shadow: 0 0 0 3px rgba(200,64,26,0.15); }
+
+  /* ─── SALARY / OUTCOMES ─── */
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+    margin-bottom: 2rem;
+  }
+  @media (max-width: 700px) { .outcomes-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .outcome-stat {
+    background: var(--surface);
+    padding: 1.75rem;
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .outcome-stat:hover { background: var(--bg); }
+
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    color: var(--ink);
+    display: block;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-num em { color: var(--accent); font-style: normal; }
+  .stat-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .stat-source { font-family: var(--mono); font-size: 9px; color: var(--border2); margin-top: 6px; display: block; }
+
+  /* ─── BLOG PREVIEW ─── */
+  .posts-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5px;
+    background: var(--border);
+    border: 1.5px solid var(--border);
+  }
+
+  .post-card {
+    background: var(--surface);
+    padding: 1.75rem;
+    transition: background 0.2s;
+    cursor: pointer;
+    display: flex; flex-direction: column;
+  }
+  .post-card:hover { background: var(--bg); }
+
+  .post-for {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    display: inline-block;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    background: var(--bg2);
+  }
+  .post-for.sec { background: rgba(200,64,26,0.07); border-color: rgba(200,64,26,0.2); color: var(--accent); }
+  .post-for.all { background: rgba(26,140,90,0.07); border-color: rgba(26,140,90,0.2); color: var(--accent3); }
+
+  .post-card h3 {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 0.6rem;
+    flex: 1;
+  }
+  .post-card p { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .post-meta-row { display: flex; align-items: center; justify-content: space-between; }
+  .post-time { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+  .post-arrow { font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  /* ─── NEWSLETTER ─── */
+  .newsletter {
+    background: var(--ink);
+    color: #fff;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .newsletter::before {
+    content: 'AITRUSTAUDIT';
+    position: absolute;
+    font-family: var(--serif);
+    font-size: 12rem;
+    color: rgba(255,255,255,0.02);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .newsletter .section-eyebrow { color: rgba(255,255,255,0.4); justify-content: center; }
+  .newsletter .section-eyebrow::before { color: var(--accent); }
+  .newsletter h2 { color: #fff; margin-bottom: 0.5rem; }
+  .newsletter p { color: rgba(255,255,255,0.5); margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+  .newsletter-form { display: flex; max-width: 460px; margin: 0 auto; gap: 0; }
+  .newsletter-form input {
+    flex: 1;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-right: none;
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 13px;
+    padding: 13px 18px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .newsletter-form input:focus { border-color: var(--accent); }
+  .newsletter-form input::placeholder { color: rgba(255,255,255,0.3); }
+  .newsletter-form button {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 12px;
+    padding: 13px 22px;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .newsletter-form button:hover { background: #a83314; }
+
+  .newsletter-perks {
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .newsletter-perk {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .newsletter-perk::before { content: '✓'; color: var(--accent3); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 2.5rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;
+  }
+  .footer-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink);
+  }
+  .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 12px; color: var(--muted); transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-copy { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.05em; }
+
+  /* MOBILE */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 100px; }
+    .hero-right { display: none; }
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .newsletter { padding: 3rem 1.5rem; }
+    .outcomes-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-mark">AI</div>
+    AITrustAudit
+  </div>
+  <div class="nav-links">
+    <a href="#tracks">Your Track</a>
+    <a href="#roadmap">Roadmap</a>
+    <a href="#content">Resources</a>
+    <a href="#outcomes">Outcomes</a>
+    <a href="#blog">Blog</a>
+  </div>
+  <button class="nav-cta">Start Learning →</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Career Roadmap Platform</div>
+    <h1>Break into<br><em>AI Security</em><br>Engineering.</h1>
+    <p class="hero-sub">
+      A structured, no-fluff learning path for people who are <strong>serious about transitioning</strong> into one of the fastest-growing roles in tech.
+      Whether you're coming from a SOC, a keyboard, or a completely different career — there's a track for you.
+    </p>
+    <div class="persona-selector">
+      <div class="persona-label">// I'm coming from —</div>
+      <div class="persona-btns">
+        <button class="persona-btn active">
+          <span class="icon">🛡️</span>
+          Security
+          <span class="sub">SOC / Pentest / Blue Team</span>
+        </button>
+        <button class="persona-btn">
+          <span class="icon">🔄</span>
+          Career Change
+          <span class="sub">Non-tech background</span>
+        </button>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-primary">View My Roadmap →</button>
+        <button class="btn-outline">See What's Inside</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="career-card">
+      <div class="career-card-header">
+        <span>Your path</span>
+        <strong>AI Security Engineer — Track A</strong>
+      </div>
+      <div class="career-steps">
+        <div class="career-step">
+          <div class="step-num done">✓</div>
+          <div class="step-content">
+            <div class="step-title">Security Fundamentals Audit</div>
+            <div class="step-desc">Map your existing skills to AI security needs</div>
+            <span class="step-tag green">Completed</span>
+          </div>
+        </div>
+        <div class="career-step">
+          <div class="step-num active-step">2</div>
+          <div class="step-content">
+            <div class="step-title">AI/ML Concepts for Security Pros</div>
+            <div class="step-desc">How models work — just enough to break them</div>
+            <span class="step-tag">In Progress</span>
+          </div>
+        </div>
+        <div class="career-step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <div class="step-title">LLM Attack Surface & Threat Modeling</div>
+            <div class="step-desc">OWASP LLM Top 10 applied to real systems</div>
+            <span class="step-tag blue">Up Next</span>
+          </div>
+        </div>
+        <div class="career-step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <div class="step-title">Hands-On: Audit a Production AI System</div>
+            <div class="step-desc">Portfolio-worthy project with guided walkthrough</div>
+            <span class="step-tag blue">Locked</span>
+          </div>
+        </div>
+        <div class="career-step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <div class="step-title">Job-Ready: Resume, Portfolio & Interview Prep</div>
+            <div class="step-desc">Get hired as an AI Security Engineer</div>
+            <span class="step-tag blue">Locked</span>
+          </div>
+        </div>
+      </div>
+      <div class="career-card-footer">
+        <div class="progress-bar-wrap">
+          <div class="progress-label">Track progress</div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+        </div>
+        <div class="progress-pct">35%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- PERSONA TRACKS -->
+<section class="section-wrap" id="tracks">
+  <div class="section-eyebrow">Your Starting Point</div>
+  <h2>Two tracks.<br><em>One destination.</em></h2>
+  <p class="section-intro">Where you're coming from determines where you start — not where you end up. Pick your track and the roadmap adapts to your existing skills.</p>
+
+  <div class="tracks-grid">
+    <div class="track-card" data-label="Track A">
+      <span class="track-icon">🛡️</span>
+      <h3>The Security Pro Track</h3>
+      <div class="track-from">Coming from: SOC / Pentest / Blue Team / Compliance</div>
+      <p>You already speak threat modeling, CVEs, and incident response. You don't need a security primer — you need a bridge into AI systems. This track fast-tracks past the basics and drops you straight into LLM attack surfaces, AI-specific audit methodology, and agent security.</p>
+      <div class="track-skills">
+        <span class="track-skill">✓ Threat Modeling</span>
+        <span class="track-skill">✓ SIEM / Detection</span>
+        <span class="track-skill">✓ Vuln Management</span>
+        <span class="track-skill new">→ ML Fundamentals</span>
+        <span class="track-skill new">→ Prompt Injection</span>
+        <span class="track-skill new">→ AI Audit Frameworks</span>
+        <span class="track-skill new">→ LLM Red Teaming</span>
+      </div>
+      <div class="track-timeline">Estimated timeline: <strong>3–5 months</strong>&nbsp;to job-ready</div>
+      <div class="track-cta">Start Track A →</div>
+    </div>
+
+    <div class="track-card" data-label="Track B">
+      <span class="track-icon">🔄</span>
+      <h3>The Career Changer Track</h3>
+      <div class="track-from">Coming from: Non-tech, legal, finance, healthcare, military, ops</div>
+      <p>You bring domain expertise that's actually rare in AI security — understanding healthcare data sensitivity, financial compliance, or operational risk is something CS grads don't have. This track builds your technical foundation without assuming anything, then leverages your domain advantage.</p>
+      <div class="track-skills">
+        <span class="track-skill new">→ Security Fundamentals</span>
+        <span class="track-skill new">→ How AI Systems Work</span>
+        <span class="track-skill new">→ Risk Frameworks</span>
+        <span class="track-skill new">→ AI Governance & Audit</span>
+        <span class="track-skill new">→ Your Domain + AI Security</span>
+        <span class="track-skill">✓ Domain Expertise</span>
+        <span class="track-skill">✓ Communication Skills</span>
+      </div>
+      <div class="track-timeline">Estimated timeline: <strong>6–9 months</strong>&nbsp;to job-ready</div>
+      <div class="track-cta">Start Track B →</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ROADMAP -->
+<section class="section-wrap" id="roadmap">
+  <div class="section-eyebrow">The Curriculum</div>
+  <h2>Your phase-by-phase<br><em>roadmap.</em></h2>
+  <p class="section-intro">No guessing what to learn next. No rabbit holes. A sequenced path from where you are to where you want to be.</p>
+
+  <div class="roadmap">
+
+    <!-- Phase 1 -->
+    <div class="roadmap-phase">
+      <div class="phase-label-col">
+        <span class="phase-num">Phase 01</span>
+        <span class="phase-name">Foundation</span>
+        <span class="phase-duration">Weeks 1–4</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-cards">
+          <div class="phase-card">
+            <div class="phase-card-icon">🗺️</div>
+            <div class="phase-card-body">
+              <h4>Skills Gap Assessment</h4>
+              <p>A guided audit of what you already know vs. what an AI Security Engineer role actually requires. Get a personalized gap report in 20 minutes.</p>
+              <div class="phase-card-tags">
+                <span class="pct accent">Free</span>
+                <span class="pct">Self-assessment</span>
+                <span class="pct">20 min</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>Start here</strong>First step</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">🤖</div>
+            <div class="phase-card-body">
+              <h4>How AI Systems Actually Work</h4>
+              <p>LLMs, RAG pipelines, AI agents, fine-tuning — explained for people who think in threat models, not math. Enough to know what can go wrong and why.</p>
+              <div class="phase-card-tags">
+                <span class="pct accent">Beginner</span>
+                <span class="pct">6 articles</span>
+                <span class="pct">2–3 hrs</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~3 hrs</strong>self-paced</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">🧭</div>
+            <div class="phase-card-body">
+              <h4>The AI Security Landscape</h4>
+              <p>What does an AI Security Engineer actually do? What teams exist? What tools, regulations, and frameworks matter? An honest industry map — no hype.</p>
+              <div class="phase-card-tags">
+                <span class="pct accent">Beginner</span>
+                <span class="pct">Guide + video</span>
+                <span class="pct">1 hr</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~1 hr</strong>self-paced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="roadmap-phase">
+      <div class="phase-label-col">
+        <span class="phase-num">Phase 02</span>
+        <span class="phase-name">Core Skills</span>
+        <span class="phase-duration">Weeks 5–10</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-cards">
+          <div class="phase-card">
+            <div class="phase-card-icon">💉</div>
+            <div class="phase-card-body">
+              <h4>Prompt Injection & LLM Attack Techniques</h4>
+              <p>Direct, indirect, multi-turn, and embedding-layer attacks. How they work, how to test for them, and how defenders catch them. Hands-on labs included.</p>
+              <div class="phase-card-tags">
+                <span class="pct blue">Intermediate</span>
+                <span class="pct">Playbook + Lab</span>
+                <span class="pct">OWASP LLM Top 10</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~6 hrs</strong>over 2 weeks</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">📋</div>
+            <div class="phase-card-body">
+              <h4>AI Threat Modeling</h4>
+              <p>STRIDE adapted for AI systems. How to threat-model a RAG pipeline, an AI agent, and a fine-tuned model deployment. Includes templates you can reuse.</p>
+              <div class="phase-card-tags">
+                <span class="pct blue">Intermediate</span>
+                <span class="pct">Templates</span>
+                <span class="pct">MITRE ATLAS</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~4 hrs</strong>self-paced</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">🔗</div>
+            <div class="phase-card-body">
+              <h4>ML Supply Chain Security</h4>
+              <p>Model provenance, Hugging Face risks, malicious pickles, data poisoning. The stuff your existing CVE scanner won't catch — and how to build coverage.</p>
+              <div class="phase-card-tags">
+                <span class="pct blue">Intermediate</span>
+                <span class="pct">Tool walkthroughs</span>
+                <span class="pct">Detection rules</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~3 hrs</strong>self-paced</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="roadmap-phase">
+      <div class="phase-label-col">
+        <span class="phase-num">Phase 03</span>
+        <span class="phase-name">Applied Practice</span>
+        <span class="phase-duration">Weeks 11–16</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-cards">
+          <div class="phase-card">
+            <div class="phase-card-icon">🏗️</div>
+            <div class="phase-card-body">
+              <h4>Capstone: Audit a Real AI System</h4>
+              <p>A guided, end-to-end audit of a deliberately vulnerable AI application. You scope it, test it, write findings, and produce a report. This becomes your portfolio piece.</p>
+              <div class="phase-card-tags">
+                <span class="pct green">Portfolio Project</span>
+                <span class="pct">Guided Lab</span>
+                <span class="pct">~12 hrs</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~12 hrs</strong>capstone</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">🔧</div>
+            <div class="phase-card-body">
+              <h4>Build Your AI Security Toolkit</h4>
+              <p>Curated OSS tools for prompt injection scanning, output monitoring, model behavior testing. You'll set up a working toolkit you can demo in interviews.</p>
+              <div class="phase-card-tags">
+                <span class="pct green">Portfolio Project</span>
+                <span class="pct">OSS Tools</span>
+                <span class="pct">GitHub-ready</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~8 hrs</strong>build project</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="roadmap-phase">
+      <div class="phase-label-col">
+        <span class="phase-num">Phase 04</span>
+        <span class="phase-name">Job Ready</span>
+        <span class="phase-duration">Weeks 17+</span>
+      </div>
+      <div class="phase-content">
+        <div class="phase-cards">
+          <div class="phase-card">
+            <div class="phase-card-icon">📄</div>
+            <div class="phase-card-body">
+              <h4>Resume & Portfolio for AI Security Roles</h4>
+              <p>How to frame your background (including non-traditional experience) for AI Security Engineer JDs. Templates, examples, and what ATS actually looks for.</p>
+              <div class="phase-card-tags">
+                <span class="pct green">Career</span>
+                <span class="pct">Templates included</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>~3 hrs</strong>career</span>
+            </div>
+          </div>
+          <div class="phase-card">
+            <div class="phase-card-icon">🎤</div>
+            <div class="phase-card-body">
+              <h4>Interview Prep: AI Security Edition</h4>
+              <p>The 40 most common technical questions, how to answer them from different backgrounds, and how to make your non-traditional path a selling point — not a liability.</p>
+              <div class="phase-card-tags">
+                <span class="pct green">Career</span>
+                <span class="pct">Question bank</span>
+                <span class="pct">Mock scenarios</span>
+              </div>
+            </div>
+            <div class="phase-card-meta">
+              <span class="effort"><strong>Ongoing</strong>prep resource</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTENT TYPES -->
+<section class="section-wrap" id="content">
+  <div class="section-eyebrow">What's On the Site</div>
+  <h2>Resources built for<br><em>real transitions.</em></h2>
+  <p class="section-intro">Not a dump of links. Not a YouTube playlist. A coherent library curated for where you're going.</p>
+
+  <div class="content-bento">
+    <div class="bento-card span2">
+      <div>
+        <span class="bento-icon">🗺️</span>
+        <span class="bento-tag">Flagship</span>
+        <h3>The AI Security Career Roadmap</h3>
+        <p>An interactive, persona-aware roadmap that adapts to your starting point. Track your progress, unlock new content as you advance, and always know what's next. No decision fatigue — just a clear path forward with estimated time per phase.</p>
+      </div>
+      <div class="bento-visual">
+        <div class="mini-roadmap">
+          <div class="mini-step"><div class="mini-dot done"></div>Skills Assessment</div>
+          <div class="mini-step"><div class="mini-dot done"></div>AI Fundamentals</div>
+          <div class="mini-step"><div class="mini-dot now"></div>LLM Attack Techniques</div>
+          <div class="mini-step"><div class="mini-dot"></div>Threat Modeling</div>
+          <div class="mini-step"><div class="mini-dot"></div>Supply Chain Security</div>
+          <div class="mini-step"><div class="mini-dot"></div>Capstone Audit Project</div>
+          <div class="mini-step"><div class="mini-dot"></div>Interview Prep</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bento-card">
+      <span class="bento-icon">📖</span>
+      <span class="bento-tag blue">Explainers</span>
+      <h3>Plain-Language Concept Library</h3>
+      <p>Every AI security concept explained without jargon — or with jargon fully defined. Written for the person who Googled "what is a RAG pipeline" 20 minutes ago.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bento-icon">🧪</span>
+      <span class="bento-tag green">Hands-On</span>
+      <h3>Browser-Based Security Labs</h3>
+      <p>Practice exploiting and defending intentionally vulnerable AI systems — no install required. Each lab comes with a structured walkthrough and a debrief.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bento-icon">💼</span>
+      <span class="bento-tag gold">Career</span>
+      <h3>Portfolio Project Guides</h3>
+      <p>Step-by-step guides for building audit reports, detection tools, and threat models that you can actually show in interviews. Built for GitHub showcase.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bento-icon">🎙️</span>
+      <span class="bento-tag purple">Stories</span>
+      <h3>Transition Spotlights</h3>
+      <p>Real interviews with people who made the jump — from nurse to AI risk analyst, from SOC L1 to AI red teamer, from paralegal to AI compliance lead. No survivorship bias sugar-coating.</p>
+    </div>
+
+    <div class="bento-card">
+      <span class="bento-icon">📅</span>
+      <span class="bento-tag">Weekly</span>
+      <h3>The Field Dispatch</h3>
+      <p>Weekly newsletter: one AI security concept explained, one career move to make, one job posting worth applying to. Curated for people actively transitioning.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- OUTCOMES -->
+<section class="section-wrap" id="outcomes">
+  <div class="section-eyebrow">Why This Field</div>
+  <h2>The numbers make<br><em>the case.</em></h2>
+  <p class="section-intro">AI Security Engineering isn't a niche. It's where security is going — and the talent gap means you're entering a hiring market, not a queue.</p>
+
+  <div class="outcomes-grid">
+    <div class="outcome-stat">
+      <span class="stat-num">$<em>165</em>k</span>
+      <span class="stat-label">Median salary for AI Security Engineers in the US</span>
+      <span class="stat-source">Source: Levels.fyi / LinkedIn, 2025</span>
+    </div>
+    <div class="outcome-stat">
+      <span class="stat-num"><em>3.5</em>M</span>
+      <span class="stat-label">Unfilled cybersecurity roles globally — AI roles fastest-growing subset</span>
+      <span class="stat-source">Source: ISC² Workforce Study, 2024</span>
+    </div>
+    <div class="outcome-stat">
+      <span class="stat-num"><em>4×</em></span>
+      <span class="stat-label">Growth in AI security job postings year-over-year, 2024–2025</span>
+      <span class="stat-source">Source: Cyberseek / Indeed, 2025</span>
+    </div>
+    <div class="outcome-stat">
+      <span class="stat-num"><em>0</em></span>
+      <span class="stat-label">Established degree programs in AI Security — the field is building itself from scratch</span>
+      <span class="stat-source">Translation: self-taught matters here</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- BLOG -->
+<section class="section-wrap" id="blog">
+  <div class="section-eyebrow">From the Blog</div>
+  <h2>Read this before<br><em>anything else.</em></h2>
+  <p class="section-intro">The posts people share when someone in their Slack asks "how do I get into AI security?"</p>
+
+  <div class="posts-row">
+    <div class="post-card">
+      <span class="post-for all">Everyone</span>
+      <h3>What Does an AI Security Engineer Actually Do All Day?</h3>
+      <p>An honest breakdown of the role across different company types — startup, enterprise, consultancy. Not the job description. The real job.</p>
+      <div class="post-meta-row">
+        <span class="post-time">7 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+    <div class="post-card">
+      <span class="post-for sec">Security Pros</span>
+      <h3>Your SOC Skills Are More Transferable Than You Think</h3>
+      <p>A skill-by-skill mapping of traditional security competencies to AI security requirements. Spoiler: you're closer than your imposter syndrome says.</p>
+      <div class="post-meta-row">
+        <span class="post-time">9 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+    <div class="post-card">
+      <span class="post-for">Career Changers</span>
+      <h3>From Healthcare Compliance to AI Risk: One Year Later</h3>
+      <p>A transition story from someone who leveraged HIPAA expertise into an AI governance role. Timeline, what they studied, what actually helped.</p>
+      <div class="post-meta-row">
+        <span class="post-time">11 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+    <div class="post-card">
+      <span class="post-for all">Everyone</span>
+      <h3>The 6 AI Security Certifications Worth Your Time (and 4 That Aren't)</h3>
+      <p>Honest market value analysis of every AI-adjacent cert. Which ones hiring managers actually look for, and which exist purely to take your money.</p>
+      <div class="post-meta-row">
+        <span class="post-time">8 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+    <div class="post-card">
+      <span class="post-for sec">Security Pros</span>
+      <h3>LLM Red Teaming in 48 Hours: A Crash Course</h3>
+      <p>If you're a pentester who wants to start practicing AI red teaming this weekend, this is the post. Tools, targets, techniques — go.</p>
+      <div class="post-meta-row">
+        <span class="post-time">12 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+    <div class="post-card">
+      <span class="post-for">Career Changers</span>
+      <h3>Building a Portfolio With No Prior Security Experience</h3>
+      <p>The three projects that appear most in AI security hiring panels' notes. How to build them, write about them, and not oversell them in interviews.</p>
+      <div class="post-meta-row">
+        <span class="post-time">10 min read</span>
+        <span class="post-arrow">Read →</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<div class="newsletter">
+  <div class="section-eyebrow">The Field Dispatch</div>
+  <h2>Stay on the path.</h2>
+  <p>Every week: one concept explained, one skill to practice, one career move to make. Designed for people actively making the transition — not just thinking about it.</p>
+  <div class="newsletter-form">
+    <input type="email" placeholder="your@email.com" />
+    <button>Join the Dispatch</button>
+  </div>
+  <div class="newsletter-perks">
+    <span class="newsletter-perk">Free forever</span>
+    <span class="newsletter-perk">No sponsored content</span>
+    <span class="newsletter-perk">Weekly, not daily</span>
+    <span class="newsletter-perk">Unsubscribe anytime</span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">
+    <div class="logo-mark">AI</div>
+    AITrustAudit.com
+  </div>
+  <div class="footer-links">
+    <a href="#">About</a>
+    <a href="#">Roadmap</a>
+    <a href="#">Blog</a>
+    <a href="#">Newsletter</a>
+    <a href="#">Community</a>
+    <a href="#">GitHub</a>
+  </div>
+  <div class="footer-copy">© 2026 — Built for people who build their own path.</div>
+</footer>
+
+<script>
+  // Persona button toggle (visual demo)
+  document.querySelectorAll('.persona-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>

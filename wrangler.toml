@@ -1,0 +1,31 @@
+name = "aitrustaudit"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+main = ".open-next/worker.js"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "aitrustaudit-db"
+# Replace this with your actual D1 database ID after running:
+# wrangler d1 create aitrustaudit-db
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# KV namespace for cache (required by opennextjs-cloudflare)
+[[kv_namespaces]]
+binding = "NEXT_CACHE_WORKERS_KV"
+# Replace with your KV namespace ID after running:
+# wrangler kv namespace create NEXT_CACHE_WORKERS_KV
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
+
+[vars]
+# Public vars only — secrets go in Cloudflare dashboard Workers > Settings > Variables
+NEXT_PUBLIC_APP_URL = "https://aitrustaudit.com"
+
+[build]
+command = "npm run pages:build"
+
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js"]
+fallthrough = true
