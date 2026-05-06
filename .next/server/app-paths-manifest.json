@@ -1,4 +1,14 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/send-link/route": "app/api/auth/send-link/route.js",
+  "/api/auth/verify/route": "app/api/auth/verify/route.js",
+  "/api/auth/signout/route": "app/api/auth/signout/route.js",
+  "/api/progress/route": "app/api/progress/route.js",
+  "/api/newsletter/subscribe/route": "app/api/newsletter/subscribe/route.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(marketing)/blog/[slug]/page": "app/(marketing)/blog/[slug]/page.js",
+  "/(marketing)/blog/page": "app/(marketing)/blog/page.js",
   "/(marketing)/roadmap/page": "app/(marketing)/roadmap/page.js",
-  "/(marketing)/page": "app/(marketing)/page.js"
+  "/(marketing)/page": "app/(marketing)/page.js",
+  "/(platform)/dashboard/page": "app/(platform)/dashboard/page.js"
 }
