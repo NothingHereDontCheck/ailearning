@@ -17,10 +17,7 @@ export async function generateMetadata({
   const { slug } = await params
   const result = getRawPost(slug)
   if (!result) return {}
-  return {
-    title: result.meta.title,
-    description: result.meta.description,
-  }
+  return { title: result.meta.title, description: result.meta.description }
 }
 
 const personaLabels: Record<string, string> = {
@@ -30,9 +27,9 @@ const personaLabels: Record<string, string> = {
 }
 
 const personaStyles: Record<string, string> = {
-  all: 'bg-[rgba(26,140,90,0.07)] border-[rgba(26,140,90,0.2)] text-accent3',
-  'security-pro': 'bg-[rgba(200,64,26,0.07)] border-[rgba(200,64,26,0.2)] text-accent',
-  'career-changer': 'bg-bg2 border-border text-muted',
+  all:              'bg-[rgba(52,211,153,0.08)]  border-[rgba(52,211,153,0.2)]  text-[var(--accent3)]',
+  'security-pro':   'bg-[rgba(129,140,248,0.1)]  border-[rgba(129,140,248,0.25)] text-[var(--accent)]',
+  'career-changer': 'bg-[rgba(34,211,238,0.08)]  border-[rgba(34,211,238,0.2)]  text-[var(--accent2)]',
 }
 
 type HeadingProps = React.ComponentPropsWithoutRef<'h2'>
@@ -73,17 +70,15 @@ export default async function BlogPostPage({
           <span className={`font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-0.5 border ${personaStyles[meta.persona] ?? ''}`}>
             {personaLabels[meta.persona] ?? meta.persona}
           </span>
-          <span className="font-mono text-[10px] text-muted">{meta.readingTime} min read</span>
-          <span className="font-mono text-[10px] text-muted">
-            {new Date(meta.publishedAt).toLocaleDateString('en-US', {
-              year: 'numeric', month: 'long', day: 'numeric',
-            })}
+          <span className="font-mono text-[10px] text-[var(--muted)]">{meta.readingTime} min read</span>
+          <span className="font-mono text-[10px] text-[var(--muted)]">
+            {new Date(meta.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </span>
         </div>
-        <h1 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] text-ink leading-[1.1] tracking-[-0.5px] mb-4">
+        <h1 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] text-[var(--ink)] leading-[1.1] tracking-[-0.5px] mb-4">
           {meta.title}
         </h1>
-        <p className="text-[16px] text-muted leading-[1.75]">{meta.description}</p>
+        <p className="text-[16px] text-[var(--ink2)] leading-[1.75]">{meta.description}</p>
       </div>
 
       <hr className="divider mb-12" />
@@ -93,7 +88,7 @@ export default async function BlogPostPage({
 
         {toc.length > 0 && (
           <aside className="hidden lg:block sticky top-[80px]" aria-label="Table of contents">
-            <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-muted mb-4">
+            <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-[var(--muted)] mb-4">
               Contents
             </div>
             <nav>
@@ -102,7 +97,7 @@ export default async function BlogPostPage({
                   <li key={entry.id} className={entry.level === 3 ? 'pl-3' : ''}>
                     <a
                       href={`#${entry.id}`}
-                      className="text-[12px] text-muted leading-[1.5] hover:text-accent transition-colors duration-150 block"
+                      className="text-[12px] text-[var(--muted)] leading-[1.5] hover:text-[var(--accent)] transition-colors duration-150 block"
                     >
                       {entry.text}
                     </a>
@@ -111,7 +106,7 @@ export default async function BlogPostPage({
               </ul>
             </nav>
             <hr className="divider mt-8 mb-6" />
-            <Link href="/blog" className="text-[12px] font-semibold text-accent hover:underline">
+            <Link href="/blog" className="text-[12px] font-semibold text-[var(--accent)] hover:underline">
               ← All posts
             </Link>
           </aside>

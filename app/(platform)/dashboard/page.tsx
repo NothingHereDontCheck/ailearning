@@ -8,9 +8,7 @@ import { roadmapPhases } from '@/lib/roadmap-data'
 import { MarkCompleteButton } from './MarkCompleteButton'
 import type { Persona } from '@/types'
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-}
+export const metadata: Metadata = { title: 'Dashboard' }
 
 export default async function DashboardPage() {
   const cookieStore = await cookies()
@@ -39,10 +37,10 @@ export default async function DashboardPage() {
   return (
     <div className="section-wrap">
       <div className="section-eyebrow">Dashboard</div>
-      <h1 className="font-serif text-[clamp(1.75rem,3vw,2.5rem)] text-ink tracking-[-0.5px] leading-[1.1] mb-2">
+      <h1 className="font-serif text-[clamp(1.75rem,3vw,2.5rem)] text-[var(--ink)] tracking-[-0.5px] leading-[1.1] mb-2">
         Welcome back.
       </h1>
-      <p className="text-muted text-[13px] font-mono mb-10">{user.email}</p>
+      <p className="text-[var(--muted)] text-[13px] font-mono mb-10">{user.email}</p>
 
       <div className="grid sm:grid-cols-3 gap-4 mb-12">
         <StatCard label="Modules completed" value={String(completedIds.size)} />
@@ -53,35 +51,32 @@ export default async function DashboardPage() {
         <StatCard label="Phase 1 progress" value={`${phase1Pct}%`} />
       </div>
 
-      <div className="border-t border-border pt-8">
-        <h2 className="font-serif text-[1.15rem] text-ink mb-4">Phase 1 — {phase1.title}</h2>
+      <div className="border-t border-[var(--border)] pt-8">
+        <h2 className="font-serif text-[1.15rem] text-[var(--ink)] mb-4">Phase 1 — {phase1.title}</h2>
         <div className="flex flex-col gap-2 mb-8">
           {phase1Modules.map(mod => (
             <div
               key={mod.id}
-              className="flex items-center gap-3 bg-surface border border-border px-4 py-3"
+              className="flex items-center gap-3 bg-[var(--surface)] border border-[var(--border)] px-4 py-3 transition-colors hover:border-[var(--border2)]"
             >
               <span
                 className={[
                   'w-5 h-5 border grid place-items-center font-mono text-[10px] flex-shrink-0',
                   completedIds.has(mod.id)
-                    ? 'border-accent3 bg-[rgba(26,140,90,0.07)] text-accent3'
-                    : 'border-border text-muted',
+                    ? 'border-[var(--accent3)] bg-[rgba(52,211,153,0.1)] text-[var(--accent3)]'
+                    : 'border-[var(--border)] text-[var(--muted)]',
                 ].join(' ')}
                 aria-hidden="true"
               >
                 {completedIds.has(mod.id) ? '✓' : '○'}
               </span>
-              <span className="text-[13px] text-ink2 flex-1">{mod.title}</span>
+              <span className="text-[13px] text-[var(--ink2)] flex-1">{mod.title}</span>
               {!completedIds.has(mod.id) && <MarkCompleteButton moduleId={mod.id} />}
             </div>
           ))}
         </div>
 
-        <Link
-          href={`/roadmap?track=${persona}`}
-          className="inline-flex items-center bg-accent text-white font-sans font-semibold text-[13px] px-7 py-3 transition-all duration-200 hover:bg-[#a83314]"
-        >
+        <Link href={`/roadmap?track=${persona}`} className="btn-primary">
           View full roadmap →
         </Link>
       </div>
@@ -91,9 +86,10 @@ export default async function DashboardPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-surface border border-border p-5">
-      <p className="font-mono text-[10px] tracking-[0.15em] uppercase text-muted mb-1">{label}</p>
-      <p className="font-serif text-[1.75rem] text-ink leading-[1.1]">{value}</p>
+    <div className="bg-[var(--surface)] border border-[var(--border)] p-5 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(129,140,248,0.04),transparent)] pointer-events-none" />
+      <p className="font-mono text-[10px] tracking-[0.15em] uppercase text-[var(--muted)] mb-1">{label}</p>
+      <p className="font-serif text-[1.75rem] text-[var(--ink)] leading-[1.1]">{value}</p>
     </div>
   )
 }

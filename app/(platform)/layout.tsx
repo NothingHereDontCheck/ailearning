@@ -16,35 +16,23 @@ export default async function PlatformLayout({ children }: { children: React.Rea
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-[900] flex items-center justify-between px-10 h-[60px] bg-[rgba(245,240,232,0.95)] backdrop-blur-[10px] border-b border-[var(--border)]">
-        <Link
-          href="/"
-          className="flex items-center gap-2.5 font-serif text-[1.15rem] text-ink tracking-[-0.3px]"
-        >
-          <span
-            className="w-7 h-7 border-2 border-accent grid place-items-center font-mono text-[11px] text-accent font-medium flex-shrink-0"
-            aria-hidden="true"
-          >
+      <nav className="fixed top-0 left-0 right-0 z-[900] flex items-center justify-between px-10 h-[60px] bg-[rgba(8,12,23,0.92)] backdrop-blur-[12px] border-b border-[var(--border)]">
+        <Link href="/" className="flex items-center gap-2.5 font-serif text-[1.15rem] text-[var(--ink)] tracking-[-0.3px]">
+          <span className="w-7 h-7 border border-[var(--accent)] grid place-items-center font-mono text-[11px] text-[var(--accent)] font-medium flex-shrink-0 bg-[rgba(129,140,248,0.08)]" aria-hidden="true">
             AI
           </span>
           AITrustAudit
         </Link>
 
         <div className="flex items-center gap-6">
-          <Link
-            href="/roadmap"
-            className="text-[13px] font-medium text-muted hover:text-ink transition-colors hidden sm:block"
-          >
+          <Link href="/roadmap" className="text-[13px] font-medium text-[var(--muted)] hover:text-[var(--ink)] transition-colors hidden sm:block">
             Roadmap
           </Link>
           {email && (
-            <span className="font-mono text-[11px] text-muted hidden md:block">{email}</span>
+            <span className="font-mono text-[11px] text-[var(--muted)] hidden md:block">{email}</span>
           )}
           <form action="/api/auth/signout" method="POST">
-            <button
-              type="submit"
-              className="font-mono text-[11px] text-muted hover:text-ink transition-colors cursor-pointer"
-            >
+            <button type="submit" className="font-mono text-[11px] text-[var(--muted)] hover:text-[var(--accent)] transition-colors cursor-pointer">
               Sign out
             </button>
           </form>

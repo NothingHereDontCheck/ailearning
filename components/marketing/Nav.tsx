@@ -8,12 +8,12 @@ export function Nav() {
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-[900] flex items-center justify-between px-10 h-[60px] bg-[rgba(245,240,232,0.95)] backdrop-blur-[10px] border-b border-[var(--border)]"
+      className="fixed top-0 left-0 right-0 z-[900] flex items-center justify-between px-10 h-[60px] bg-[rgba(8,12,23,0.92)] backdrop-blur-[12px] border-b border-[var(--border)]"
       aria-label="Main navigation"
     >
-      <Link href="/" className="flex items-center gap-2.5 font-serif text-[1.15rem] text-ink tracking-[-0.3px]">
+      <Link href="/" className="flex items-center gap-2.5 font-serif text-[1.15rem] text-[var(--ink)] tracking-[-0.3px]">
         <span
-          className="w-7 h-7 border-2 border-accent grid place-items-center font-mono text-[11px] text-accent font-medium flex-shrink-0"
+          className="w-7 h-7 border border-[var(--accent)] grid place-items-center font-mono text-[11px] text-[var(--accent)] font-medium flex-shrink-0 bg-[rgba(129,140,248,0.08)]"
           aria-hidden="true"
         >
           AI
@@ -32,12 +32,12 @@ export function Nav() {
           <Link
             key={href}
             href={href}
-            className="relative text-[13px] font-medium text-muted tracking-[0.02em] transition-colors duration-200 hover:text-ink group"
+            className="relative text-[13px] font-medium text-[var(--muted)] tracking-[0.02em] transition-colors duration-200 hover:text-[var(--ink)] group"
             role="listitem"
           >
             {label}
             <span
-              className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-accent scale-x-0 origin-left transition-transform duration-200 group-hover:scale-x-100"
+              className="absolute -bottom-1 left-0 right-0 h-[1px] bg-[var(--accent)] scale-x-0 origin-left transition-transform duration-200 group-hover:scale-x-100"
               aria-hidden="true"
             />
           </Link>
@@ -46,13 +46,13 @@ export function Nav() {
 
       <Link
         href="/roadmap"
-        className="hidden md:inline-flex items-center bg-accent text-white font-sans font-semibold text-xs px-5 py-2 tracking-[0.05em] transition-all duration-200 hover:bg-[#a83314] hover:-translate-y-px"
+        className="hidden md:inline-flex items-center btn-primary text-xs tracking-[0.05em]"
       >
         Start Learning →
       </Link>
 
       <button
-        className="md:hidden p-2 text-ink2"
+        className="md:hidden p-2 text-[var(--ink2)]"
         aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         onClick={() => setMobileOpen((v) => !v)}
       >
@@ -60,7 +60,7 @@ export function Nav() {
       </button>
 
       {mobileOpen && (
-        <div className="absolute top-[60px] left-0 right-0 bg-[var(--bg)] border-b border-[var(--border)] flex flex-col p-6 gap-4 md:hidden z-50">
+        <div className="absolute top-[60px] left-0 right-0 bg-[var(--bg2)] border-b border-[var(--border)] flex flex-col p-6 gap-4 md:hidden z-50">
           {[
             { href: '/#tracks', label: 'Your Track' },
             { href: '/roadmap', label: 'Roadmap' },
@@ -71,7 +71,7 @@ export function Nav() {
             <Link
               key={href}
               href={href}
-              className="text-[14px] font-medium text-ink2"
+              className="text-[14px] font-medium text-[var(--ink2)]"
               onClick={() => setMobileOpen(false)}
             >
               {label}
@@ -79,7 +79,7 @@ export function Nav() {
           ))}
           <Link
             href="/roadmap"
-            className="inline-flex items-center bg-accent text-white font-semibold text-xs px-5 py-3 tracking-[0.05em] w-fit mt-2"
+            className="btn-primary text-xs px-5 py-3 tracking-[0.05em] w-fit mt-2"
             onClick={() => setMobileOpen(false)}
           >
             Start Learning →

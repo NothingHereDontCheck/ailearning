@@ -39,7 +39,7 @@ const phases = [
         icon: '💉',
         title: 'Prompt Injection & LLM Attack Techniques',
         desc: 'Direct, indirect, multi-turn, and embedding-layer attacks. How they work, how to test for them, and how defenders catch them. Hands-on labs included.',
-        tags: [{ label: 'Intermediate', color: 'blue' }, { label: 'Playbook + Lab' }, { label: 'OWASP LLM Top 10' }],
+        tags: [{ label: 'Intermediate', color: 'cyan' }, { label: 'Playbook + Lab' }, { label: 'OWASP LLM Top 10' }],
         effort: '~6 hrs',
         effortSub: 'over 2 weeks',
       },
@@ -47,7 +47,7 @@ const phases = [
         icon: '📋',
         title: 'AI Threat Modeling',
         desc: 'STRIDE adapted for AI systems. How to threat-model a RAG pipeline, an AI agent, and a fine-tuned model deployment. Includes templates you can reuse.',
-        tags: [{ label: 'Intermediate', color: 'blue' }, { label: 'Templates' }, { label: 'MITRE ATLAS' }],
+        tags: [{ label: 'Intermediate', color: 'cyan' }, { label: 'Templates' }, { label: 'MITRE ATLAS' }],
         effort: '~4 hrs',
         effortSub: 'self-paced',
       },
@@ -55,7 +55,7 @@ const phases = [
         icon: '🔗',
         title: 'ML Supply Chain Security',
         desc: "Model provenance, Hugging Face risks, malicious pickles, data poisoning. The stuff your existing CVE scanner won't catch — and how to build coverage.",
-        tags: [{ label: 'Intermediate', color: 'blue' }, { label: 'Tool walkthroughs' }, { label: 'Detection rules' }],
+        tags: [{ label: 'Intermediate', color: 'cyan' }, { label: 'Tool walkthroughs' }, { label: 'Detection rules' }],
         effort: '~3 hrs',
         effortSub: 'self-paced',
       },
@@ -110,83 +110,64 @@ const phases = [
 ]
 
 const tagColorMap: Record<string, string> = {
-  accent: 'bg-[rgba(200,64,26,0.07)] border-[rgba(200,64,26,0.2)] text-accent',
-  blue: 'bg-[rgba(26,108,200,0.07)] border-[rgba(26,108,200,0.2)] text-accent2',
-  green: 'bg-[rgba(26,140,90,0.07)] border-[rgba(26,140,90,0.2)] text-accent3',
-  default: 'bg-bg2 border-border text-muted',
+  accent:  'bg-[rgba(129,140,248,0.1)]  border-[rgba(129,140,248,0.25)] text-[var(--accent)]',
+  cyan:    'bg-[rgba(34,211,238,0.08)]  border-[rgba(34,211,238,0.2)]  text-[var(--accent2)]',
+  green:   'bg-[rgba(52,211,153,0.08)]  border-[rgba(52,211,153,0.2)]  text-[var(--accent3)]',
+  default: 'bg-[var(--bg2)] border-[var(--border)] text-[var(--muted)]',
 }
 
 export function RoadmapPreview() {
   return (
     <section className="section-wrap" id="roadmap">
       <div className="section-eyebrow">The Curriculum</div>
-      <h2 className="font-serif text-[clamp(2rem,4vw,3rem)] text-ink tracking-[-0.5px] leading-[1.1] mb-3">
-        Your phase-by-phase<br /><em className="text-accent not-italic">roadmap.</em>
+      <h2 className="font-serif text-[clamp(2rem,4vw,3rem)] text-[var(--ink)] tracking-[-0.5px] leading-[1.1] mb-3">
+        Your phase-by-phase<br /><em className="text-[var(--accent)] not-italic">roadmap.</em>
       </h2>
-      <p className="text-muted max-w-[580px] text-[15px] mb-12">
+      <p className="text-[var(--ink2)] max-w-[580px] text-[15px] mb-12">
         No guessing what to learn next. No rabbit holes. A sequenced path from where you are to where you want to be.
       </p>
 
       <div className="relative">
         {phases.map((phase, pi) => (
-          <div
-            key={phase.num}
-            className="relative grid md:[grid-template-columns:180px_1fr] gap-8 mb-0"
-          >
-            {/* Vertical timeline line */}
-            <div
-              className="hidden md:block absolute left-[178px] top-0 bottom-0 w-[1.5px] bg-border"
-              aria-hidden="true"
-            />
+          <div key={phase.num} className="relative grid md:[grid-template-columns:180px_1fr] gap-8 mb-0">
+            <div className="hidden md:block absolute left-[178px] top-0 bottom-0 w-px bg-[var(--border)]" aria-hidden="true" />
 
-            {/* Phase label */}
             <div className="pt-6 text-right pr-8 relative hidden md:block">
-              <div
-                className="absolute -right-[5px] top-7 w-[9px] h-[9px] rounded-full bg-accent border-2 border-[var(--bg)] z-[2]"
-                aria-hidden="true"
-              />
-              <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-muted block mb-1">{phase.num}</span>
-              <span className="font-serif text-[1.1rem] text-ink block leading-[1.2] mb-2">{phase.name}</span>
-              <span className="font-mono text-[10px] text-accent block">{phase.duration}</span>
+              <div className="absolute -right-[4px] top-7 w-2 h-2 rounded-full bg-[var(--accent)] border-2 border-[var(--bg)] z-[2]" aria-hidden="true" />
+              <span className="font-mono text-[10px] tracking-[0.15em] uppercase text-[var(--muted)] block mb-1">{phase.num}</span>
+              <span className="font-serif text-[1.1rem] text-[var(--ink)] block leading-[1.2] mb-2">{phase.name}</span>
+              <span className="font-mono text-[10px] text-[var(--accent)] block">{phase.duration}</span>
             </div>
 
-            {/* Mobile phase header */}
             <div className="md:hidden flex items-center gap-3 mb-4">
-              <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-muted">{phase.num}</span>
-              <span className="font-serif text-[1.1rem] text-ink">{phase.name}</span>
-              <span className="font-mono text-[10px] text-accent ml-auto">{phase.duration}</span>
+              <span className="font-mono text-[10px] tracking-[0.1em] uppercase text-[var(--muted)]">{phase.num}</span>
+              <span className="font-serif text-[1.1rem] text-[var(--ink)]">{phase.name}</span>
+              <span className="font-mono text-[10px] text-[var(--accent)] ml-auto">{phase.duration}</span>
             </div>
 
-            {/* Modules */}
-            <div className={`pt-6 pb-12 flex flex-col gap-3 ${pi === 0 ? '' : ''}`}>
+            <div className={`pt-6 pb-12 flex flex-col gap-3`}>
               {phase.modules.map((mod) => (
                 <div
                   key={mod.title}
-                  className="bg-surface border border-border p-6 flex gap-6 items-start transition-all duration-200 hover:border-border2 hover:translate-x-1"
+                  className="bg-[var(--surface)] border border-[var(--border)] p-6 flex gap-6 items-start transition-all duration-200 hover:border-[var(--border2)] hover:bg-[var(--surface2)] hover:translate-x-1"
                 >
-                  <div
-                    className="w-10 h-10 grid place-items-center text-[1.3rem] bg-bg2 border border-border flex-shrink-0"
-                    aria-hidden="true"
-                  >
+                  <div className="w-10 h-10 grid place-items-center text-[1.3rem] bg-[var(--bg2)] border border-[var(--border)] flex-shrink-0" aria-hidden="true">
                     {mod.icon}
                   </div>
                   <div className="flex-1">
-                    <h4 className="font-sans text-[14px] font-semibold text-ink mb-1">{mod.title}</h4>
-                    <p className="text-[12px] text-muted leading-[1.6] mb-2">{mod.desc}</p>
+                    <h4 className="font-sans text-[14px] font-semibold text-[var(--ink)] mb-1">{mod.title}</h4>
+                    <p className="text-[12px] text-[var(--muted)] leading-[1.6] mb-2">{mod.desc}</p>
                     <div className="flex gap-1.5 flex-wrap">
                       {mod.tags.map((tag) => (
-                        <span
-                          key={tag.label}
-                          className={`font-mono text-[10px] px-2 py-0.5 border ${tagColorMap[tag.color ?? 'default']}`}
-                        >
+                        <span key={tag.label} className={`font-mono text-[10px] px-2 py-0.5 border ${tagColorMap[tag.color ?? 'default']}`}>
                           {tag.label}
                         </span>
                       ))}
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <span className="font-mono text-[10px] text-muted block text-right">
-                      <strong className="text-ink2 block text-[13px]">{mod.effort}</strong>
+                    <span className="font-mono text-[10px] text-[var(--muted)] block text-right">
+                      <strong className="text-[var(--ink2)] block text-[13px]">{mod.effort}</strong>
                       {mod.effortSub}
                     </span>
                   </div>
