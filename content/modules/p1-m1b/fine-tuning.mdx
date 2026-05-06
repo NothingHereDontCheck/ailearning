@@ -1,0 +1,79 @@
+---
+title: "Fine-Tuning and Model Customization: What Changes"
+description: "Fine-tuning is often pitched as making a model 'yours.' From a security perspective, it changes the threat model in ways most teams don't fully account for."
+order: 4
+estimatedMinutes: 16
+---
+
+Fine-tuning is the process of continuing a model's training on a new dataset after the initial pretraining. The result is a model that behaves differently — more aligned to a specific domain, persona, or task — while retaining the underlying capabilities of the base model.
+
+For security engineers, the key question isn't "what did fine-tuning add?" It's "what did fine-tuning change, and did those changes affect the model's security properties?"
+
+## What Fine-Tuning Actually Does
+
+During pretraining, a model is trained on a massive corpus — hundreds of billions of tokens of web text, books, code, and other sources — to predict the next token. This process encodes an enormous range of knowledge and capability into the model's weights.
+
+Fine-tuning takes those pretrained weights and continues training on a much smaller, targeted dataset. The weights shift — some more than others — to better fit the new data. Think of it as adjusting a bias across the entire network rather than learning from scratch.
+
+Common fine-tuning approaches:
+
+**Instruction tuning:** Train on examples of (instruction, response) pairs to make the model better at following instructions. This is how GPT-3 became InstructGPT — the same base model, trained to follow human instructions rather than just complete text.
+
+**LoRA (Low-Rank Adaptation):** Instead of updating all model weights, LoRA adds small trainable "adapter" matrices to specific layers. This dramatically reduces the compute and memory required. A LoRA adapter is a small file that gets applied on top of the base model weights at inference time.
+
+**RLHF (Reinforcement Learning from Human Feedback):** A more complex process where human raters score model outputs, and those ratings are used to train a reward model, which is then used to further fine-tune the LLM. This is what made early ChatGPT models feel more "aligned" than raw GPT.
+
+## What Fine-Tuning Changes (and Doesn't)
+
+Here's what changes after fine-tuning:
+- The model's behavior on the target task or domain
+- The model's default persona and tone
+- The model's likelihood of following certain instruction patterns
+- Safety tuning — both adding and potentially removing it
+
+Here's what doesn't change:
+- The base model's underlying knowledge and capabilities
+- The fundamental architecture and inference behavior
+- The attack surface of the context window
+
+This last point is subtle but important. Fine-tuning a model to be a customer service agent for a retail company doesn't remove the model's general language capabilities. It shifts behavior, but a sufficiently crafted jailbreak can often access the underlying capabilities of the base model that the fine-tuning was trying to suppress.
+
+## The Security Risks of Fine-Tuning
+
+### Training Data Poisoning
+
+If you control what data the model is fine-tuned on, you influence how it behaves. An attacker who can inject content into the training dataset can:
+
+- Create backdoors: insert a trigger phrase that, when seen at inference time, causes the model to produce a specific (malicious) output
+- Degrade safety behaviors: include many examples of unsafe behavior to shift the model's probability distribution toward unsafe outputs
+- Bias toward specific outputs: make the model consistently recommend certain products, produce misinformation about specific topics, or favor certain framings
+
+Backdoor attacks are particularly insidious because they're invisible in normal operation. The model behaves correctly on standard inputs but produces predictable attacker-controlled outputs when the trigger phrase appears.
+
+### Alignment Erosion
+
+Base models from major providers (OpenAI, Anthropic, Google) include safety training — RLHF and similar processes designed to reduce harmful outputs. Fine-tuning can partially undo this safety training.
+
+Research has demonstrated that fine-tuning on relatively small datasets can significantly degrade safety guardrails. A model fine-tuned to never refuse requests (on a dataset of helpful, compliant responses) will be less likely to refuse genuinely harmful requests too — because the fine-tuning shifted the model's priors toward compliance.
+
+This is particularly relevant when organizations use third-party fine-tuned models. Did the entity that fine-tuned this model preserve the safety tuning? Did they test for safety regression? Most don't.
+
+### Model Supply Chain
+
+Fine-tuned models are distributed as artifacts — files hosted on Hugging Face, S3 buckets, or internal registries. The same supply chain risks that apply to software packages apply here:
+
+- **Malicious model files:** Model weights (PyTorch `.bin` files, safetensors) can contain embedded malicious code if loaded with unsafe deserialization methods. The classic attack is a malicious pickle file disguised as a model checkpoint.
+- **Model tampering:** A model downloaded from a third party might have been modified after publication. Without cryptographic verification, you can't confirm you're running what you think you're running.
+- **Provenance gaps:** "We fine-tuned this on internal data" is not an auditable claim without documentation of the training pipeline, dataset composition, and evaluation results.
+
+## What to Check When Evaluating a Fine-Tuned Model
+
+When your organization is evaluating a fine-tuned model — whether built internally or sourced from a third party:
+
+1. **Training data documentation:** What was in the training dataset? Was it curated? By whom? How?
+2. **Safety regression testing:** Did the fine-tuning process include red-team evaluation? Are there before/after comparisons on safety benchmarks?
+3. **Artifact verification:** Are model files cryptographically signed? Can you verify the published hash matches what you downloaded?
+4. **Behavioral evaluation:** Run your own evals against the fine-tuned model, not just the provider's benchmarks. Test for both capability and safety behaviors relevant to your deployment context.
+5. **LoRA adapter scrutiny:** If the model uses detachable adapters, evaluate whether loading a third-party adapter changes the model's safety behavior in ways you don't expect.
+
+Fine-tuning is a legitimate and useful technique. It also expands the attack surface in ways that most teams haven't fully mapped. Your job is to ask the questions that the ML team probably hasn't thought to ask.

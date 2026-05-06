@@ -1,0 +1,98 @@
+---
+title: "AI Agents: ReAct Loops, Tool Use, and the Attack Surface"
+description: "Agents are what happens when you give an LLM the ability to take actions. Every capability you add is an attack surface you're inheriting."
+order: 3
+estimatedMinutes: 20
+---
+
+A chatbot answers questions. An agent takes actions.
+
+That single distinction — the ability to call tools, execute code, browse the web, write files, send messages — changes the security calculus entirely. The harm radius of a compromised chatbot is a bad response. The harm radius of a compromised agent is whatever the agent has permission to do.
+
+This is the article where the threat model gets serious.
+
+## What Makes Something an Agent
+
+An AI agent is an LLM augmented with:
+
+1. **Tools** — functions the model can call: search the web, query a database, write a file, send an email, make an API call
+2. **Memory** — access to context beyond the current conversation: past interactions, retrieved documents, external state
+3. **Orchestration** — a loop that lets the model reason, take an action, observe the result, and decide the next step
+
+The orchestration loop is the defining characteristic. A chatbot produces one response and stops. An agent runs in a loop until it decides the task is complete — or until it hits an error, a limit, or a human interrupt.
+
+## The ReAct Loop
+
+The dominant pattern for agent orchestration is ReAct — Reason + Act. The loop looks like this:
+
+1. **Think:** The model reasons about what to do next, given the current state and goal
+2. **Act:** The model calls a tool with specific arguments
+3. **Observe:** The tool returns a result, which is added to the context
+4. **Repeat:** The model reasons again given the new context
+
+This cycle continues until the model decides the task is done or calls a special "finish" action.
+
+The loop is entirely implemented in application code — not in the model itself. The model outputs structured text that the orchestration framework parses, extracts tool calls from, executes, and feeds back in. Frameworks like LangChain, LlamaIndex, and AutoGen handle this scaffolding. OpenAI's function calling API provides a structured mechanism for tool invocation.
+
+**Security implication:** The orchestration layer is code you control and can audit. But the *decisions* about which tools to call and with what arguments come from the model's outputs — and those outputs can be manipulated.
+
+## Tools Are Privileges
+
+Every tool you give an agent is a privilege. Think of it exactly the way you think of permissions on a service account.
+
+A web search tool lets the agent read arbitrary web content — including content crafted by attackers who know your agent exists. A file write tool lets the agent modify the filesystem — wherever the agent has write access. An email tool lets the agent send messages — to anyone, as any sender, with any content. A code execution tool lets the agent run arbitrary code — in whatever sandbox (or non-sandbox) you've set up.
+
+The principle of least privilege applies to agents as strictly as it does to service accounts. An agent that only needs to query a database should not have a tool that sends emails. An agent that needs to read files should have read-only access.
+
+Most agent deployments today violate this principle. They're built by teams optimizing for capability — "what can the agent do?" — rather than teams optimizing for security — "what should the agent be allowed to do, and in what circumstances?"
+
+## Memory Architectures
+
+Agents interact with different types of memory, each with different security characteristics:
+
+**In-context memory** is everything in the current context window: the conversation history, retrieved documents, tool outputs. It's ephemeral — gone when the conversation ends. It's also the injection surface we've already discussed.
+
+**External memory** is stored outside the model: vector databases, traditional databases, key-value stores. The agent retrieves from and writes to external memory as needed. Attacks include injecting malicious content into the memory store and exploiting access controls on what the agent can read or write.
+
+**Procedural memory** is encoded in the agent's tools and orchestration logic — "how to do things" rather than "what things are." Changing the agent's tools or prompt effectively changes its procedural memory.
+
+**Security implication:** An agent that writes to external memory can create persistent effects. A prompt injection that causes an agent to write malicious instructions into a shared memory store is more dangerous than one that only affects the current session.
+
+## Multi-Agent Systems
+
+When multiple agents interact — orchestrators directing sub-agents, agents calling other agents via APIs — the trust model becomes complex quickly.
+
+Consider an orchestrator agent that receives a high-level task and delegates subtasks to specialized agents (a web researcher, a code writer, a file manager). The orchestrator sends instructions to each sub-agent. But what validates those instructions? If the orchestrator itself has been compromised by a prompt injection, it now sends adversarial instructions to every agent it coordinates.
+
+This is the AI equivalent of a supply chain attack. Compromise one agent high in the orchestration chain, and every downstream agent inherits that compromise.
+
+**The core problem:** Agents typically treat messages from other agents as trusted. There's no equivalent of mutual TLS or signed JWTs between agents in most current implementations. An agent can't reliably verify that the message it received from "the orchestrator" actually came from a trustworthy orchestrator and wasn't injected by an attacker who compromised that orchestrator upstream.
+
+## The Attack Surface, Mapped
+
+For any agent system you're evaluating, the attack surface includes:
+
+**Inputs to the agent:**
+- User-controlled prompts (direct injection)
+- Retrieved documents or web content (indirect injection)
+- Tool return values (tool output injection)
+- Messages from other agents (agent-to-agent injection)
+
+**The agent's outputs:**
+- Tool calls with attacker-controlled arguments
+- Messages to other agents or systems
+- Written artifacts (files, database records, emails)
+- Responses to users
+
+**The execution environment:**
+- Tool implementations and their own security posture
+- Sandbox boundaries for code execution
+- Network access from tool execution
+- Credentials and secrets accessible to tools
+
+**The orchestration logic:**
+- How tool results are validated before re-injection
+- Whether there are interrupt/approval mechanisms for high-impact actions
+- Logging and observability into agent actions
+
+The question for every agent deployment isn't "can this agent be attacked?" — it can. The question is "what's the blast radius when it is, and do we have enough observability to know when it happened?"

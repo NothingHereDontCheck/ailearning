@@ -9,6 +9,13 @@ export type ContentType =
   | 'guide'
   | 'playbook'
 
+export type Lesson = {
+  slug: string
+  title: string
+  estimatedMinutes: number
+  available: boolean
+}
+
 export type RoadmapModule = {
   id: string
   icon: string
@@ -21,6 +28,7 @@ export type RoadmapModule = {
   contentType: ContentType
   tags: Array<{ label: string; color?: string }>
   isPortfolio: boolean
+  lessons: Lesson[]
 }
 
 export type RoadmapPhase = {
@@ -59,6 +67,7 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'Track B only', color: 'blue' },
         ],
         isPortfolio: false,
+        lessons: [],
       },
       {
         id: 'p1-m1b',
@@ -77,6 +86,14 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: '2–3 hrs' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'how-llms-work', title: 'How LLMs Work: A Mental Model for Security Engineers', estimatedMinutes: 18, available: true },
+          { slug: 'rag-pipelines', title: 'RAG Pipelines: Architecture and Where They Break', estimatedMinutes: 22, available: true },
+          { slug: 'ai-agents', title: 'AI Agents: ReAct Loops, Tool Use, and the Attack Surface', estimatedMinutes: 20, available: true },
+          { slug: 'fine-tuning', title: 'Fine-Tuning and Model Customization: What Changes', estimatedMinutes: 16, available: true },
+          { slug: 'ai-deployment', title: 'How AI Systems Are Deployed: APIs, Inference, and Infrastructure', estimatedMinutes: 18, available: true },
+          { slug: 'evaluating-ai', title: 'Evaluating AI Systems: Why Testing AI Isn\'t Like Testing Software', estimatedMinutes: 15, available: true },
+        ],
       },
       {
         id: 'p1-m1c',
@@ -95,6 +112,9 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: '1 hr' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'ai-security-landscape', title: 'The AI Security Landscape: An Honest Industry Map', estimatedMinutes: 40, available: true },
+        ],
       },
     ],
   },
@@ -123,6 +143,12 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'OWASP LLM Top 10' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'direct-prompt-injection', title: 'Direct Prompt Injection: How It Works and How to Test It', estimatedMinutes: 25, available: false },
+          { slug: 'indirect-prompt-injection', title: 'Indirect Prompt Injection: Attacking Through Retrieved Context', estimatedMinutes: 22, available: false },
+          { slug: 'jailbreaking-techniques', title: 'Jailbreaking Techniques and Why They Work', estimatedMinutes: 20, available: false },
+          { slug: 'llm-attack-lab', title: 'Lab: Testing Against a Deliberately Vulnerable LLM App', estimatedMinutes: 90, available: false },
+        ],
       },
       {
         id: 'p2-m2b',
@@ -141,6 +167,12 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'MITRE ATLAS' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'stride-for-ai', title: 'STRIDE for AI: Adapting Threat Modeling to LLM Systems', estimatedMinutes: 30, available: false },
+          { slug: 'threat-modeling-rag', title: 'Threat Modeling a RAG Pipeline', estimatedMinutes: 25, available: false },
+          { slug: 'threat-modeling-agents', title: 'Threat Modeling AI Agents and Multi-Agent Systems', estimatedMinutes: 25, available: false },
+          { slug: 'mitre-atlas', title: 'MITRE ATLAS: Mapping AI Threats to the Framework', estimatedMinutes: 20, available: false },
+        ],
       },
       {
         id: 'p2-m2c',
@@ -159,6 +191,11 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'Detection rules' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'model-provenance', title: 'Model Provenance: Where Did That Model Actually Come From?', estimatedMinutes: 20, available: false },
+          { slug: 'huggingface-risks', title: 'Hugging Face Risks: Malicious Pickles and Unsafe Deserialisation', estimatedMinutes: 18, available: false },
+          { slug: 'data-poisoning', title: 'Data Poisoning: Attacking Models at Training Time', estimatedMinutes: 22, available: false },
+        ],
       },
     ],
   },
@@ -187,6 +224,12 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: '~12 hrs' },
         ],
         isPortfolio: true,
+        lessons: [
+          { slug: 'scoping-the-audit', title: 'Scoping the Audit: Defining Targets, Constraints, and Rules of Engagement', estimatedMinutes: 30, available: false },
+          { slug: 'testing-methodology', title: 'Testing Methodology: Systematic Coverage Across the Attack Surface', estimatedMinutes: 45, available: false },
+          { slug: 'writing-findings', title: 'Writing Findings: From Raw Notes to a Deliverable Report', estimatedMinutes: 30, available: false },
+          { slug: 'capstone-lab', title: 'Lab: Full Audit of VulnAI (Guided)', estimatedMinutes: 360, available: false },
+        ],
       },
       {
         id: 'p3-m3b',
@@ -205,6 +248,10 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'GitHub-ready' },
         ],
         isPortfolio: true,
+        lessons: [
+          { slug: 'oss-tools-overview', title: 'OSS AI Security Tools: What Exists and What Actually Works', estimatedMinutes: 25, available: false },
+          { slug: 'build-the-toolkit', title: 'Project: Set Up Your Toolkit and Document It for GitHub', estimatedMinutes: 240, available: false },
+        ],
       },
     ],
   },
@@ -232,6 +279,11 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'Templates included' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'resume-framing', title: 'Framing Your Background for AI Security JDs', estimatedMinutes: 30, available: false },
+          { slug: 'portfolio-structure', title: 'Structuring Your Portfolio: What Hiring Managers Actually Look At', estimatedMinutes: 25, available: false },
+          { slug: 'ats-optimization', title: 'ATS Optimization Without Keyword Stuffing', estimatedMinutes: 20, available: false },
+        ],
       },
       {
         id: 'p4-m4b',
@@ -250,6 +302,11 @@ export const roadmapPhases: RoadmapPhase[] = [
           { label: 'Mock scenarios' },
         ],
         isPortfolio: false,
+        lessons: [
+          { slug: 'technical-questions', title: 'The 40 Most Common Technical Questions for AI Security Roles', estimatedMinutes: 60, available: false },
+          { slug: 'non-traditional-path', title: 'Making a Non-Traditional Path a Competitive Advantage', estimatedMinutes: 25, available: false },
+          { slug: 'mock-scenarios', title: 'Mock Interview Scenarios: Walk-Through and Commentary', estimatedMinutes: 45, available: false },
+        ],
       },
     ],
   },

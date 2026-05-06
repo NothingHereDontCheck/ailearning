@@ -1,0 +1,70 @@
+---
+title: "Evaluating AI Systems: Why Testing AI Isn't Like Testing Software"
+description: "Traditional QA doesn't transfer to AI systems. Understanding why — and what replaces it — is foundational to security work in this space."
+order: 6
+estimatedMinutes: 15
+---
+
+In traditional software, a function either works or it doesn't. Given the same input, it produces the same output every time. You write tests, run them, and the results are deterministic and reproducible.
+
+AI systems don't work like this. The same prompt produces different outputs across runs. A jailbreak that succeeds once might fail on the next attempt. A safety filter that blocks harmful content today might not block a slightly different phrasing tomorrow. Testing AI security requires a different mental model from the start.
+
+## The Fundamental Problem: Probabilistic Outputs
+
+When you ask an LLM a question, the model doesn't compute an answer — it samples one from a probability distribution. Temperature and sampling parameters control how that sampling works, but even at temperature 0 (deterministic sampling), the outputs can vary across different model versions, hardware, and serving configurations.
+
+This probabilistic nature has direct consequences for security testing:
+
+**A single test passing or failing means little.** If your red-team test fails to extract sensitive information, that proves the attack didn't work *that time*, not that it can't work. Meaningful security testing requires running the same attack many times and looking at the distribution of outcomes.
+
+**Defenses are probabilistic too.** An output filter that catches 95% of harmful outputs means 5% get through. At scale, that 5% is significant. When evaluating whether a defense works, "it blocked the test prompt" is insufficient evidence — you need to know the false negative rate across a diverse set of attack variants.
+
+**Coverage is impossible.** Traditional testing can achieve code coverage — you can know you've executed every line of code. Prompt space is infinite. You cannot exhaustively test an LLM's behavior across all possible inputs. This requires statistical thinking rather than coverage thinking.
+
+## What Evals Are
+
+"Evals" is the AI industry's term for evaluation — structured tests of model behavior. There are several distinct types:
+
+**Capability benchmarks** measure what a model can do: coding ability (HumanEval), mathematical reasoning (MATH), factual knowledge (MMLU). These are useful for comparing models but don't tell you much about security-relevant behavior.
+
+**Safety evaluations** test whether a model produces harmful content across categories: CSAM, weapons instructions, self-harm, privacy violations, bias and discrimination. AI labs publish safety eval results for their models, but the methodology, coverage, and standards vary widely. "Passed our safety evals" is a marketing claim without the underlying data.
+
+**Behavioral evaluations** test whether a model follows specific constraints under adversarial conditions. Does the model reveal its system prompt when asked? Does it follow instructions to take actions outside its intended scope? Does it maintain its persona when pressured? These are closest to security testing.
+
+**Red team evals** are structured adversarial tests run by specialized teams to find failure modes before deployment. AI labs do this internally; third-party red teams do it for organizations deploying AI systems. Unlike automated evals, red team evals apply human creativity to finding novel attack paths.
+
+## The Eval Gap
+
+There's a consistent pattern in AI security incidents: the system passed all the evals and then failed in production. Why?
+
+**Distribution shift:** Evals test the distribution of prompts the team thought to test. Production users send prompts the team didn't anticipate. Real attackers are more creative and persistent than automated test sets.
+
+**Evaluation teaching the model:** When AI labs use evals to guide safety training, the model can overfit to the evaluation format — performing well on the specific prompts in the eval while failing on equivalent prompts phrased differently. This is Goodhart's Law applied to AI safety.
+
+**Context matters:** An LLM behaves differently based on the full context, not just the final user message. An eval that tests a standalone prompt doesn't capture how the model behaves when that prompt appears after a long jailbreaking conversation, or when retrieved context is injected.
+
+**Multi-turn attacks:** Most evals test single prompts. Many effective jailbreaks require multi-turn interactions where early messages establish context that makes later harmful requests seem reasonable.
+
+## What Security Testing of AI Looks Like
+
+Effective security evaluation of an AI system combines several approaches:
+
+**Structured red-teaming:** Systematic testing across attack categories (prompt injection, jailbreaking, data extraction, output manipulation) with documented methodology, coverage targets, and findings reports. This is what you'd deliver to a client in an AI security assessment engagement.
+
+**Adversarial prompt libraries:** Curated sets of known-effective attack prompts, variants, and edge cases. These don't replace creativity but provide a baseline — "we tested against all known jailbreaks as of this date."
+
+**Automated fuzzing:** Tools like PyRIT (Microsoft's Python Risk Identification Toolkit) and Garak automate adversarial prompt generation and testing at scale. They cover more of the prompt space than manual testing and can run continuously.
+
+**Behavioral monitoring in production:** The only way to know how an AI system actually behaves in the real world is to watch it. Production monitoring should track: refusal rates (sudden drops may indicate a jailbreak in use), output anomalies, unusual usage patterns, and user-reported issues.
+
+**Regression testing:** When a new attack technique is discovered or a jailbreak succeeds, it should be added to the ongoing test suite. The goal is to prevent regressions — fixing a jailbreak and then releasing an update that reintroduces the vulnerability.
+
+## The Security Engineer's Mindset Shift
+
+The biggest shift for security engineers coming from traditional application security is moving from "does this pass?" to "what's the distribution of outcomes, and is the tail risk acceptable?"
+
+You're not trying to prove the system is secure. You're characterizing where it fails, how often it fails, and under what conditions. Then you're making a risk-based decision about whether those failure rates are acceptable for the deployment context.
+
+A chatbot that produces harmful content 0.1% of the time might be acceptable for a low-stakes internal tool. The same failure rate is probably not acceptable for a mental health support application. The eval result is the same; the risk assessment is different.
+
+This framing — characterizing behavior rather than proving correctness — is the core of AI security work. Everything else is methodology and tooling built on top of this foundation.

@@ -1,0 +1,101 @@
+---
+title: "How AI Systems Are Deployed: APIs, Inference, and Infrastructure"
+description: "The infrastructure that serves AI models to users has its own attack surface — separate from the model itself. This is where many AI security incidents actually happen."
+order: 5
+estimatedMinutes: 18
+---
+
+When security teams think about AI risk, they usually focus on the model — what it says, whether it can be manipulated, what data it was trained on. But the infrastructure that runs the model is its own attack surface, with its own threat model.
+
+This article covers how AI systems are actually deployed and where the infrastructure layer exposes risk.
+
+## The Two Deployment Models
+
+### Cloud API
+
+The dominant model for most organizations: you call someone else's model via an API. OpenAI, Anthropic, Google, Cohere, Mistral — all provide HTTP endpoints where you send a prompt and receive a completion.
+
+The cloud API model means:
+- You don't control the model, the inference hardware, or the serving infrastructure
+- Your prompts and responses transit and are processed by a third-party provider
+- Rate limits, pricing, and availability are outside your control
+- The provider's data handling policies govern what happens to your inputs
+
+**Security implications:** Data residency and confidentiality. Your prompts — which may contain customer data, internal documents, PII — leave your infrastructure. Review your AI provider's data processing agreements carefully. Most enterprise providers offer options to opt out of training data usage, but the defaults and the guarantees vary.
+
+### Self-Hosted Inference
+
+Organizations with strict data residency requirements, high volume needs, or specific model requirements run inference themselves. This means deploying model weights on your own infrastructure (GPU servers, cloud GPU instances) using inference servers like vLLM, TGI (Text Generation Inference), Ollama, or llama.cpp.
+
+Self-hosted means:
+- Your data never leaves your infrastructure (assuming correct network configuration)
+- You control the model version and can pin to specific weights
+- You own the availability and scaling problem
+- You own the security of the serving infrastructure
+
+**Security implications:** The inference server is a networked service running on your infrastructure. It needs hardening, auth, and monitoring like any other service. Many teams deploy inference servers quickly for internal use and forget about them — creating open, unauthenticated GPU instances accessible to anyone on the network.
+
+## The Inference Stack
+
+Whether cloud or self-hosted, inference works the same way:
+
+1. **Tokenization:** Input text is converted to a sequence of token IDs by a tokenizer
+2. **Prefill:** All input tokens are processed in parallel, building the KV cache (key-value cache) for the attention layers
+3. **Decode:** Tokens are generated one at a time, each attending to the KV cache from previous tokens
+4. **Detokenization:** Generated token IDs are converted back to text
+
+The KV cache is a performance optimization — it stores computed attention states so they don't need to be recomputed on each token generation step. In high-throughput serving scenarios, KV caches are shared across requests, which can create information leakage if not carefully isolated.
+
+## The API Layer
+
+Whether you're consuming an external API or exposing an internal one, the API layer has its own attack surface:
+
+### Authentication and Authorization
+
+Who can call the API? With what credentials? For external APIs, this is your API key — a secret that grants full access to your account. API key leakage (committed to version control, exposed in client-side code, logged in application logs) is one of the most common AI security incidents.
+
+For internal inference servers, the same principles apply: require authentication, rotate credentials, don't share API keys across services.
+
+### Rate Limiting and Cost Controls
+
+LLM API calls are priced per token. An API endpoint with no rate limiting or cost controls is a financial DoS target. Attackers who discover an unprotected proxy to an LLM API can run large volumes of requests, incurring unbounded costs.
+
+Beyond financial impact: resource exhaustion attacks can degrade service for legitimate users. If your AI feature has no rate limiting per user, a single user (or bot) can monopolize inference capacity.
+
+### Prompt and Response Logging
+
+What gets logged? Prompt logging is the most common source of accidental PII exposure in AI systems. If your application sends customer data in prompts, and your logging system captures the full prompt, you've created a database of customer data in your logging infrastructure — often with weaker access controls than your production database.
+
+The inverse problem: insufficient logging. When a security incident occurs, you want to be able to reconstruct what prompts were sent, what responses were returned, and by whom. Systems with no prompt logging have no forensic trail.
+
+A practical middle ground: log metadata (user ID, session ID, token counts, latency, model version) without logging raw prompt content, and implement a separate, access-controlled system for prompt logging when it's necessary for debugging or compliance.
+
+### Prompt Injection via API
+
+If your application accepts user input and includes it in prompts sent to the LLM API, the API endpoint is a prompt injection vector. The injection happens inside your application before the API call, not at the API itself — but the API is where it executes.
+
+## Secrets and Credentials in the AI Stack
+
+AI applications frequently handle secrets poorly. Common patterns that create risk:
+
+**API keys in environment variables** — acceptable if the deployment environment is properly secured, but environment variables are often logged, exposed via metadata endpoints in cloud environments, or visible in process listings.
+
+**API keys in client-side code** — common in rapid prototypes that ship to production. Any API key embedded in a browser application is compromised from the moment it's deployed.
+
+**Tool credentials in agent prompts** — agents that need to call external services sometimes have credentials injected into their system prompts. This means credentials are in the context window — potentially extractable by a prompt injection attack.
+
+**Model weights without access controls** — self-hosted model weights are large, expensive files. Leaving them in publicly accessible S3 buckets (or forgetting to remove public access after initial deployment) exposes them to unauthorized use.
+
+## What to Audit
+
+When assessing an AI system's deployment security:
+
+1. **API authentication:** How are credentials issued, rotated, and revoked?
+2. **Network exposure:** Is the inference server accessible beyond its intended scope?
+3. **Rate limiting:** Is there per-user and global rate limiting? Are cost controls in place?
+4. **Logging:** What's captured? Where? Who has access? Is PII handled correctly?
+5. **Secrets management:** Where are API keys stored? How are they rotated? Are they in any logs?
+6. **Model artifact integrity:** How are model weights stored and accessed? Is there version control and integrity verification?
+7. **Dependency chain:** What libraries is the inference server running? When were they last updated?
+
+The infrastructure layer is often where AI security is weakest — not because it's harder than application security, but because it's treated as someone else's problem. ML teams focus on model quality. Security teams don't know what's been deployed. The AI infrastructure ends up unaudited.
