@@ -15,10 +15,10 @@ database_id = "3e0ce152-cd1a-4df3-bba1-3778721e0b03"
 
 # KV namespace for cache (required by opennextjs-cloudflare)
 [[kv_namespaces]]
-binding = "NEXT_CACHE_WORKERS_KV"
+binding = "__ailearning-workers_sites_assets"
 # Replace with your KV namespace ID after running:
 # wrangler kv namespace create NEXT_CACHE_WORKERS_KV
-id = "0a9681faffa742e7a71998b29d7049cc"
+id = "e656cdd880f74b8b805fe55b50577b56"
 
 [vars]
 # Public vars only — secrets go in Cloudflare dashboard Workers > Settings > Variables
