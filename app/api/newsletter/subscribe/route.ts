@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export const runtime = 'edge'
-
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
