@@ -84,6 +84,14 @@ function ModuleCard({
             </span>
           ))}
         </div>
+        {module.contentType === 'assessment' && !locked && (
+          <Link
+            href="/assessment"
+            className="inline-block mt-3 font-mono text-[11px] text-[var(--accent)] hover:underline"
+          >
+            Start assessment →
+          </Link>
+        )}
       </div>
 
       <div className="text-right flex-shrink-0 hidden sm:block">

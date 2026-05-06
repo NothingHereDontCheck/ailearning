@@ -44,32 +44,31 @@
 
 ---
 
-## Phase 4 — Auth + Progress Tracking
-- [ ] D1 client helper: `lib/db.ts`
-- [ ] Auth pages: `/app/(auth)/login/page.tsx` (magic link only)
-- [ ] API route: `/app/api/auth/send-link/route.ts` (token → D1 → Resend)
-- [ ] API route: `/app/api/auth/verify/route.ts` (validate → session → cookie)
-- [ ] Middleware: protect `/dashboard` and `/roadmap/[moduleId]`
-- [ ] Dashboard: `/app/(platform)/dashboard/page.tsx`
-- [ ] API route: `/app/api/progress/route.ts` (upsert module_completions)
-- [ ] Sign out endpoint
+## Phase 4 — Auth + Progress Tracking ✅ Complete
+- [x] Auth pages: `/app/(auth)/login/page.tsx` (magic link only)
+- [x] API route: `/app/api/auth/send-link/route.ts` (token → D1 → Resend)
+- [x] API route: `/app/api/auth/verify/route.ts` (validate → session → cookie)
+- [x] Middleware: protect `/dashboard` and `/api/progress`
+- [x] Dashboard: `/app/(platform)/dashboard/page.tsx`
+- [x] API route: `/app/api/progress/route.ts` (upsert module_completions)
+- [x] Sign out endpoint
 
 ---
 
-## Phase 5 — Newsletter + Email
-- [ ] POST `/api/newsletter/subscribe` (validate → D1 → Resend confirmation)
-- [ ] GET `/api/newsletter/confirm/[token]` (verify → confirmed → redirect)
-- [ ] GET `/api/newsletter/unsubscribe/[token]` (no auth required)
-- [ ] `/subscribed` thank-you page
-- [ ] Wire homepage newsletter form to live endpoint
+## Phase 5 — Newsletter + Email ✅ Complete
+- [x] POST `/api/newsletter/subscribe` (validate → D1 → Resend confirmation)
+- [x] GET `/api/newsletter/confirm/[token]` (verify → confirmed → redirect)
+- [x] GET `/api/newsletter/unsubscribe/[token]` (no auth required)
+- [x] `/subscribed` thank-you page
+- [x] Wire homepage newsletter form to live endpoint
 
 ---
 
-## Phase 6 — Skills Gap Assessment
-- [ ] `lib/assessment-data.ts` (15 questions, 3 categories)
-- [ ] `/app/(platform)/roadmap/assessment/page.tsx`
-- [ ] POST `/api/assessment/route.ts` (score → D1)
-- [ ] Results page: per-category score bars + recommended track
+## Phase 6 — Skills Gap Assessment ✅ Complete
+- [x] `lib/assessment-data.ts` (15 questions, 3 categories, scoring)
+- [x] `/app/(marketing)/assessment/page.tsx` (public, no login required)
+- [x] `AssessmentClient.tsx` (progress bar, grouped questions, animated results)
+- [x] POST `/api/assessment/route.ts` (score → D1, updates user.persona)
 
 ---
 
