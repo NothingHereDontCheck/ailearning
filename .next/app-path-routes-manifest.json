@@ -1,8 +1,0 @@
-{
-  "/_not-found/page": "/_not-found",
-  "/(marketing)/page": "/",
-  "/(marketing)/blog/page": "/blog",
-  "/(marketing)/roadmap/page": "/roadmap",
-  "/(marketing)/blog/[slug]/page": "/blog/[slug]",
-  "/api/newsletter/subscribe/route": "/api/newsletter/subscribe"
-}
