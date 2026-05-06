@@ -43,12 +43,45 @@
   },
   "dynamicRoutes": [
     {
+      "page": "/api/newsletter/confirm/[token]",
+      "regex": "^/api/newsletter/confirm/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPtoken": "nxtPtoken"
+      },
+      "namedRegex": "^/api/newsletter/confirm/(?<nxtPtoken>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/newsletter/unsubscribe/[token]",
+      "regex": "^/api/newsletter/unsubscribe/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPtoken": "nxtPtoken"
+      },
+      "namedRegex": "^/api/newsletter/unsubscribe/(?<nxtPtoken>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/blog/[slug]",
       "regex": "^/blog/([^/]+?)(?:/)?$",
       "routeKeys": {
         "nxtPslug": "nxtPslug"
       },
       "namedRegex": "^/blog/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/roadmap/[moduleId]",
+      "regex": "^/roadmap/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPmoduleId": "nxtPmoduleId"
+      },
+      "namedRegex": "^/roadmap/(?<nxtPmoduleId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/roadmap/[moduleId]/[lessonSlug]",
+      "regex": "^/roadmap/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPmoduleId": "nxtPmoduleId",
+        "nxtPlessonSlug": "nxtPlessonSlug"
+      },
+      "namedRegex": "^/roadmap/(?<nxtPmoduleId>[^/]+?)/(?<nxtPlessonSlug>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -63,6 +96,12 @@
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/assessment",
+      "regex": "^/assessment(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/assessment(?:/)?$"
     },
     {
       "page": "/blog",
@@ -87,6 +126,12 @@
       "regex": "^/roadmap(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/roadmap(?:/)?$"
+    },
+    {
+      "page": "/subscribed",
+      "regex": "^/subscribed(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/subscribed(?:/)?$"
     }
   ],
   "dataRoutes": [],
