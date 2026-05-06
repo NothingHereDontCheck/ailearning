@@ -1,0 +1,140 @@
+---
+title: "The AI Security Landscape: An Honest Industry Map"
+description: "What AI security engineers actually do, which organizations are building in this space, what frameworks matter, and where the jobs are. No hype, no vendor content."
+order: 1
+estimatedMinutes: 40
+---
+
+Before you learn how to do this work, it helps to understand the landscape you're entering: what the job actually looks like, who's hiring, what frameworks you'll be expected to know, and what the regulatory environment is shaping up to be.
+
+This guide is a map, not a sales pitch.
+
+## What the Job Actually Looks Like
+
+"AI Security Engineer" currently spans several distinct roles that share a title but differ significantly in daily work. Where you land depends on what type of organization you join.
+
+### At an AI-First Startup
+
+You're probably the security team. Full stop.
+
+Your week involves reviewing pull requests where engineers are wiring up LLM API calls, sitting in architecture reviews you weren't explicitly invited to, and writing threat models nobody asked for. When the product team says "we're shipping a feature where users can ask the AI to generate reports from their own data," you're the one asking about prompt injection before it reaches production.
+
+You're evaluating model providers, setting output validation requirements, and building lightweight guardrails. You also own the rest of the SaaS security posture — cloud configuration, IAM, vendor assessments — because there are four engineers and no CISO.
+
+The work moves fast. The impact is visible. You'll regularly ship useful controls. You'll also be the person saying "we haven't tested this adequately" while everyone else is looking at the launch date.
+
+### At an Enterprise
+
+The company already has a security organization; you're the AI security specialist within it. A day might include reviewing an AI procurement request from a department that wants to use a third-party document processing service built on an LLM, updating the AI acceptable use policy after a new business unit starts experimenting with agents, or running a structured red team exercise against a customer-facing AI feature before launch.
+
+You have a policy to enforce, a risk register to maintain, and stakeholders who believe "but it's just the OpenAI API" is a sufficient security architecture. The job is more about governing than building — though the gap between what's in policy and what's actually deployed tends to be wide, and your job involves closing it.
+
+### At a Consultancy
+
+You're selling expertise clients don't have in-house. Engagements vary: pre-deployment AI security assessments, LLM red team exercises, incident response for AI-specific issues, training for client security teams. You're building methodology as you go, because "standard AI security assessment" isn't yet a solved playbook.
+
+Consulting in this space is high-value right now because the demand far outpaces supply. But you're also building the discipline in public — clients are paying you to figure things out alongside them.
+
+## The Frameworks You Need to Know
+
+Three frameworks define the current language of AI security. You don't need to memorize them, but you need to be fluent enough to apply them and communicate in their terms.
+
+### OWASP LLM Top 10
+
+The Open Web Application Security Project extended its Top 10 format to LLM applications. The current version covers:
+
+1. **Prompt Injection** — manipulating LLM behavior through crafted inputs
+2. **Insecure Output Handling** — failing to validate/sanitize LLM outputs before downstream use
+3. **Training Data Poisoning** — corrupting training data to introduce backdoors or biases
+4. **Model Denial of Service** — resource exhaustion via crafted inputs
+5. **Supply Chain Vulnerabilities** — risks in model artifacts, training data, and third-party components
+6. **Sensitive Information Disclosure** — models revealing confidential training data or system prompts
+7. **Insecure Plugin Design** — vulnerabilities in LLM tool/plugin implementations
+8. **Excessive Agency** — agents with too many permissions or insufficient human oversight
+9. **Overreliance** — downstream systems treating LLM outputs as authoritative without validation
+10. **Model Theft** — unauthorized extraction of model parameters through repeated querying
+
+The OWASP LLM Top 10 is the most accessible starting point and the most widely referenced in client-facing conversations. It maps cleanly to traditional appsec thinking, which helps when you're explaining AI risk to security teams who haven't worked in this space.
+
+### MITRE ATLAS
+
+MITRE ATLAS (Adversarial Threat Landscape for Artificial-Intelligence Systems) is a knowledge base of adversary tactics, techniques, and procedures (TTPs) for machine learning systems — modeled directly on MITRE ATT&CK.
+
+ATLAS is organized into tactics (the adversary's goal) and techniques (how they achieve it). Current tactics include Reconnaissance, Resource Development, Initial Access, ML Attack Staging, Exfiltration, and Impact.
+
+ATLAS is more useful for structured threat modeling than OWASP — it lets you map an attack path end-to-end, not just classify vulnerability types. It's also the framework that maps to ATT&CK, which most enterprise security teams already use for threat detection and hunt operations.
+
+The limitation: ATLAS lags real-world attack evolution. New techniques appear in the wild months before they're documented. Use it as a baseline, not a ceiling.
+
+### NIST AI RMF
+
+The National Institute of Standards and Technology published the AI Risk Management Framework (AI RMF 1.0) in January 2023. It's a voluntary framework for managing risks throughout the AI lifecycle.
+
+The AI RMF has four core functions:
+- **Govern** — establish policies, roles, responsibilities, and processes for AI risk management
+- **Map** — identify and categorize AI risks in context
+- **Measure** — assess AI risks with quantitative and qualitative methods
+- **Manage** — prioritize and implement risk responses
+
+For practitioners, the AI RMF's value is as a communication tool with leadership and a structure for organizing AI governance programs. It doesn't tell you how to do the technical work, but it provides a vocabulary that resonates with GRC teams and legal/compliance stakeholders.
+
+The NIST AI RMF Playbook provides more specific guidance on implementation. The companion document NIST SP 600-1 covers Generative AI risk specifically.
+
+## The Regulatory Environment
+
+AI regulation is moving fast. The specifics will change, but understanding the direction helps.
+
+### EU AI Act
+
+The EU AI Act is the most comprehensive AI regulation yet enacted. It establishes a risk-based classification system:
+
+- **Unacceptable risk:** Prohibited AI systems (real-time biometric surveillance in public spaces, social scoring, manipulation of vulnerable groups)
+- **High risk:** AI in critical infrastructure, education, employment, law enforcement, and similar domains — subject to conformity assessments, documentation requirements, and human oversight mandates
+- **Limited risk:** Transparency requirements (disclose when interacting with AI)
+- **Minimal risk:** No specific requirements
+
+Most enterprise AI deployments fall in the limited or high-risk categories. Organizations deploying AI in EU contexts need to understand which tier their systems fall into and what obligations apply.
+
+The AI Act also imposes obligations on AI model providers (foundation model obligations) — relevant if you're building products on top of large language models or offering AI services to EU customers.
+
+### NIST SP 600-1
+
+The NIST AI Risk Management Framework for Generative AI addresses genAI-specific risks including: CBRN information generation, data privacy, human-AI configuration, intellectual property, obscene content, and violence. It extends the AI RMF with genAI-specific profiles.
+
+This document is particularly useful when advising US federal agencies or organizations doing business with the US government — these frameworks have regulatory weight in procurement and compliance contexts.
+
+### Sector-Specific Regulations
+
+AI doesn't operate in a regulatory vacuum — existing sector regulations apply to AI systems too:
+
+- **Healthcare:** HIPAA requirements apply to AI systems processing protected health information. FDA oversight applies to AI used in clinical decision support.
+- **Financial services:** OCC, FDIC, and CFPB guidance on model risk management (SR 11-7) applies to AI models used in credit, fraud, and other decisions.
+- **EU financial services:** DORA (Digital Operational Resilience Act) has AI implications for financial institutions.
+
+## Where the Jobs Are
+
+The honest state of the market as of 2025-2026:
+
+**Big tech and AI labs** have the most established AI security roles. Anthropic, OpenAI, Google DeepMind, Microsoft, Meta, and Amazon all have dedicated AI safety and security functions. These roles are competitive but the work is at the frontier.
+
+**Consulting firms** are scaling AI security practices quickly. Big Four, boutique security firms (NCC Group, Atredis, Bishop Fox), and strategy consultancies are all hiring practitioners who can deliver AI security assessments and advise clients on AI governance.
+
+**Enterprise security teams** at large companies (financial services, healthcare, defense, technology) are standing up AI security functions as they deploy AI at scale. These roles are often adjacent to traditional security roles — red team, AppSec, GRC — with an AI specialization added.
+
+**Government and defense** — US Cyber Command, NSA, CISA, and defense contractors are actively hiring for AI security work. Clearance is typically required.
+
+**Early-stage startups** are building the tooling layer — automated AI security testing, AI-specific WAFs, prompt injection detection, AI governance platforms. These are higher-risk, higher-upside roles.
+
+## What Hiring Managers Actually Look For
+
+The honest answer: the field is new enough that hiring managers are often uncertain what they want. But patterns are emerging:
+
+**Security fundamentals are non-negotiable for the technical roles.** Threat modeling, vulnerability assessment, penetration testing methodology — these translate directly. Hiring managers don't want to teach application security from scratch to someone who has never thought about trust boundaries.
+
+**AI/ML literacy is the differentiator.** Not a PhD in machine learning. The ability to read a model card, understand what RAG means, have a conversation about prompt injection, and threat-model an LLM deployment. The bar is "can you hold your own with an ML engineer," not "can you train a transformer from scratch."
+
+**Communication matters more than in traditional security.** The AI security practitioner often sits at the intersection of security, ML, product, legal, and compliance teams. The ability to explain risk to non-technical stakeholders — without dumbing it down to uselessness — is a genuine skill that's in short supply.
+
+**Practical portfolio work is the fastest signal.** A red-team report on an AI system, a threat model for an LLM deployment, a documented assessment of an open-source AI application — these demonstrate the skill in a way that certifications don't.
+
+This is a field where the practitioners are building the discipline as they go. If you're here early, that's an advantage.

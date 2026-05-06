@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import type React from 'react'
 import { roadmapPhases } from '@/lib/roadmap-data'
 import type { RoadmapModule, RoadmapPhase, Difficulty } from '@/lib/roadmap-data'
 import type { Persona } from '@/types'
@@ -30,16 +31,18 @@ function ModuleCard({
   position: number
 }) {
   const diff = difficultyConfig[module.difficulty]
+  const Wrapper = locked || module.contentType === 'assessment'
+    ? ({ children }: { children: React.ReactNode }) => <div className={[
+        'relative bg-[var(--surface)] border border-[var(--border)] p-6 flex gap-5 items-start',
+        locked ? 'opacity-40 cursor-default' : 'transition-all duration-200 hover:border-[var(--border2)] hover:bg-[var(--surface2)]',
+      ].join(' ')}>{children}</div>
+    : ({ children }: { children: React.ReactNode }) => <Link href={`/roadmap/${module.id}`} className={[
+        'relative bg-[var(--surface)] border border-[var(--border)] p-6 flex gap-5 items-start',
+        'transition-all duration-200 hover:border-[var(--accent)] hover:bg-[var(--surface2)] hover:translate-x-1 block',
+      ].join(' ')}>{children}</Link>
 
   return (
-    <div
-      className={[
-        'relative bg-[var(--surface)] border border-[var(--border)] p-6 flex gap-5 items-start',
-        locked
-          ? 'opacity-40 cursor-default'
-          : 'transition-all duration-200 hover:border-[var(--border2)] hover:bg-[var(--surface2)] hover:translate-x-1',
-      ].join(' ')}
-    >
+    <Wrapper>
       <div
         className={[
           'flex-shrink-0 w-7 h-7 border grid place-items-center font-mono text-[11px]',
@@ -97,8 +100,11 @@ function ModuleCard({
       <div className="text-right flex-shrink-0 hidden sm:block">
         <strong className="font-mono text-[13px] text-[var(--ink2)] block">{module.effortLabel}</strong>
         <span className="font-mono text-[10px] text-[var(--muted)]">{module.effortSub}</span>
+        {!locked && module.contentType !== 'assessment' && (
+          <span className="font-mono text-[10px] text-[var(--accent)] block mt-1">View →</span>
+        )}
       </div>
-    </div>
+    </Wrapper>
   )
 }
 
