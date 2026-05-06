@@ -1,0 +1,122 @@
+import { notFound } from 'next/navigation'
+import Link from 'next/link'
+import type { Metadata } from 'next'
+import { compileMDX } from 'next-mdx-remote/rsc'
+import { getAllPosts, getRawPost, extractToc, slugify } from '@/lib/mdx'
+import type React from 'react'
+
+export function generateStaticParams() {
+  return getAllPosts().map((p) => ({ slug: p.slug }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}): Promise<Metadata> {
+  const { slug } = await params
+  const result = getRawPost(slug)
+  if (!result) return {}
+  return {
+    title: result.meta.title,
+    description: result.meta.description,
+  }
+}
+
+const personaLabels: Record<string, string> = {
+  all: 'For Everyone',
+  'security-pro': 'Security Pros',
+  'career-changer': 'Career Changers',
+}
+
+const personaStyles: Record<string, string> = {
+  all: 'bg-[rgba(26,140,90,0.07)] border-[rgba(26,140,90,0.2)] text-accent3',
+  'security-pro': 'bg-[rgba(200,64,26,0.07)] border-[rgba(200,64,26,0.2)] text-accent',
+  'career-changer': 'bg-bg2 border-border text-muted',
+}
+
+type HeadingProps = React.ComponentPropsWithoutRef<'h2'>
+
+function makeHeading(Tag: 'h2' | 'h3') {
+  return function Heading({ children, ...props }: HeadingProps) {
+    const id = typeof children === 'string' ? slugify(children) : undefined
+    return <Tag id={id} {...props}>{children}</Tag>
+  }
+}
+
+const mdxComponents = {
+  h2: makeHeading('h2'),
+  h3: makeHeading('h3'),
+}
+
+export default async function BlogPostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const { slug } = await params
+  const result = getRawPost(slug)
+  if (!result) notFound()
+
+  const { meta, content: rawContent } = result
+  const toc = extractToc(rawContent)
+
+  const { content } = await compileMDX({
+    source: rawContent,
+    components: mdxComponents,
+  })
+
+  return (
+    <div className="section-wrap">
+      <div className="max-w-[700px] mb-10">
+        <div className="flex items-center gap-3 flex-wrap mb-5">
+          <span className={`font-mono text-[10px] tracking-[0.15em] uppercase px-2 py-0.5 border ${personaStyles[meta.persona] ?? ''}`}>
+            {personaLabels[meta.persona] ?? meta.persona}
+          </span>
+          <span className="font-mono text-[10px] text-muted">{meta.readingTime} min read</span>
+          <span className="font-mono text-[10px] text-muted">
+            {new Date(meta.publishedAt).toLocaleDateString('en-US', {
+              year: 'numeric', month: 'long', day: 'numeric',
+            })}
+          </span>
+        </div>
+        <h1 className="font-serif text-[clamp(1.8rem,4vw,2.8rem)] text-ink leading-[1.1] tracking-[-0.5px] mb-4">
+          {meta.title}
+        </h1>
+        <p className="text-[16px] text-muted leading-[1.75]">{meta.description}</p>
+      </div>
+
+      <hr className="divider mb-12" />
+
+      <div className="grid lg:grid-cols-[1fr_220px] gap-16 items-start">
+        <article className="prose">{content}</article>
+
+        {toc.length > 0 && (
+          <aside className="hidden lg:block sticky top-[80px]" aria-label="Table of contents">
+            <div className="font-mono text-[10px] tracking-[0.15em] uppercase text-muted mb-4">
+              Contents
+            </div>
+            <nav>
+              <ul className="flex flex-col gap-2">
+                {toc.map((entry) => (
+                  <li key={entry.id} className={entry.level === 3 ? 'pl-3' : ''}>
+                    <a
+                      href={`#${entry.id}`}
+                      className="text-[12px] text-muted leading-[1.5] hover:text-accent transition-colors duration-150 block"
+                    >
+                      {entry.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <hr className="divider mt-8 mb-6" />
+            <Link href="/blog" className="text-[12px] font-semibold text-accent hover:underline">
+              ← All posts
+            </Link>
+          </aside>
+        )}
+      </div>
+    </div>
+  )
+}

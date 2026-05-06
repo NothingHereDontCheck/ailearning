@@ -1,0 +1,66 @@
+---
+title: Your SOC Skills Are More Transferable Than You Think
+description: A skill-by-skill mapping of traditional security competencies to AI security requirements. Spoiler — you're closer than your imposter syndrome says.
+publishedAt: 2025-04-15
+persona: security-pro
+tags: [career transition, SOC, skills mapping, detection engineering]
+featured: false
+---
+
+If you've been working in a SOC, on a pentest team, or in detection engineering — and you're looking at AI security job descriptions — you've probably felt some version of this: "I know security. But I don't know ML. Am I qualified for this?"
+
+Usually, you're more qualified than you think. Here's the honest mapping.
+
+## What You Have → What AI Security Needs
+
+### SIEM + Detection Engineering → LLM Observability and Output Monitoring
+
+If you've written detection rules, tuned alert thresholds, and built queries to surface anomalous behavior in logs, you understand the core discipline of AI output monitoring. The substrate is different — instead of process trees and network packets, you're working with token streams, API call patterns, and model output content — but the reasoning is the same.
+
+LLM monitoring involves watching for outputs that shouldn't appear (PII in responses, unexpected tool executions, guardrail bypasses), detecting anomalous input patterns (high token counts that may indicate prompt injection attempts, suspicious system prompt overrides), and correlating these signals into actionable alerts.
+
+Your gap is tooling familiarity and AI-specific signal vocabulary. The detection engineering discipline transfers directly.
+
+### Threat Hunting → AI Behavior Anomaly Detection
+
+Threat hunting is hypothesis-driven investigation: "If an attacker did X, what would that look like in our telemetry?" AI behavior analysis is the same problem applied to model behavior: "If this model is being manipulated, what would that look like in its outputs and API logs?"
+
+The methodology is identical — form a hypothesis, identify relevant data sources, build detection logic, iterate based on findings. Applied to AI systems, the hypotheses look like: is this model drifting from its expected behavioral baseline? Are there input patterns correlated with outputs it shouldn't produce? Is there evidence of indirect prompt injection in the documents feeding the RAG pipeline?
+
+### Incident Response → AI-Specific Incident Response
+
+AI incidents have characteristics that make them harder to investigate: outputs are stochastic, so the incident may be difficult to reproduce; the attack surface includes prompt context that isn't logged by default; the blast radius can include downstream decisions made by automated systems acting on compromised model output.
+
+But the IR framework is the same: contain, investigate, remediate, document. Your experience with IR timelines, stakeholder communication, log analysis, and post-incident review applies directly. You know how to run an investigation under pressure. The specific artifacts differ — you're preserving model inputs, system prompt content, retrieved context from the RAG pipeline — but the process is familiar.
+
+### Vulnerability Management → Model Vulnerability Tracking
+
+MITRE ATLAS (the ML equivalent of ATT&CK) maps adversarial ML techniques to documented real-world attacks on AI systems. If you've used ATT&CK for threat modeling or detection coverage mapping, ATLAS will feel immediately familiar — same structure, different technique taxonomy.
+
+The vulnerability classes are different: prompt injection, training data poisoning, model inversion, adversarial examples, supply chain attacks on model artifacts. But the practice of tracking known vulnerability types, mapping your detection coverage, and prioritizing remediation based on exploitability and impact is the same work you're doing now.
+
+### Pentest / Red Team → LLM Red Teaming
+
+This is your most direct transfer. If you've run penetration tests or red team exercises, LLM red teaming uses the same adversarial mindset applied to a different attack surface.
+
+The goal is to find inputs that cause the model to behave in ways developers didn't intend: producing restricted content, revealing system prompt content, bypassing output filters, executing unauthorized tool calls, or leaking data from retrieved context. Methodology: reconnaissance (understand the system prompt and capability set), enumeration (map the input handling and filtering logic), exploitation (find the bypasses), and reporting (document findings in a way that enables remediation).
+
+Your existing red team scoping practices, documentation habits, and client communication skills are directly applicable.
+
+## The Actual Gaps
+
+I won't pretend the transfer is complete. Here's what you'll need to actively build:
+
+**How LLMs work at the architecture level.** Not the math — you don't need to understand backpropagation or transformer attention mechanisms in detail. But you need to understand: what system prompts are and how they interact with user input, how RAG pipelines work and where they introduce attack surface, how agentic systems make decisions and what tools they can access, what fine-tuning does to a model's behavior and what risks it introduces.
+
+**The AI security framework landscape.** OWASP LLM Top 10, MITRE ATLAS, NIST AI RMF, and the EU AI Act are the frameworks hiring managers reference. Read them. Most are shorter than you'd expect — the OWASP LLM Top 10 takes an afternoon.
+
+**Prompt injection, specifically.** This is the most prevalent AI vulnerability class right now, and it's different enough from traditional injection that it deserves dedicated study. Read the existing research, set up a test application using one of the hosted LLM APIs, and try to break it. It will feel both familiar and foreign at the same time.
+
+**One or two practical tools.** Garak (automated LLM vulnerability scanning), PyRIT (Microsoft's AI red team framework), and manual testing with an LLM observability platform like LangSmith are good starting points. Pick one and build something demonstrable before applying.
+
+## The Honest Summary
+
+You're not starting from scratch. You're translating. The translation requires effort, but you're working from a solid foundation — not building on nothing.
+
+The people who struggle most in this field are those with strong ML knowledge but no security instincts. That instinct — the habit of asking "how would someone abuse this?" before asking "how do we make this work?" — is what you've spent years developing. It's exactly what AI systems need, and exactly what most of the teams building them don't have.

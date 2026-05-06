@@ -1,0 +1,64 @@
+---
+title: What Does an AI Security Engineer Actually Do All Day?
+description: An honest breakdown of the role across different company types — startup, enterprise, consultancy. Not the job description. The real job.
+publishedAt: 2025-04-10
+persona: all
+tags: [career, role overview, AI security]
+featured: true
+---
+
+The job description says: "Secure AI/ML systems, conduct red team assessments, develop AI governance frameworks." That could describe anything. Here's what people in this role actually do on a Tuesday.
+
+## Three Very Different Jobs With the Same Title
+
+"AI Security Engineer" currently spans three distinct archetypes, and which one you're interviewing for shapes your day more than any technology stack does.
+
+### At an AI-First Startup
+
+You're probably the security team. Full stop. Your week involves reviewing pull requests where engineers are wiring up LLM API calls, sitting in architecture reviews you weren't explicitly invited to, and writing threat models nobody asked for.
+
+When the product team says "we're shipping a feature where users can ask the AI to generate reports from their own data," you're the one asking "what happens if the user prompt escapes the system prompt context?" before it reaches production. You're evaluating model providers, setting output validation requirements, and building lightweight guardrails against prompt injection and data leakage.
+
+You also own the rest of the SaaS security posture — cloud configuration, IAM, vendor assessments — because there are four engineers and no CISO.
+
+The work moves fast, the impact is visible, and you will regularly ship useful controls. You will also be the person saying "we haven't tested this adequately" while everyone else is looking at you like you're a deployment blocker.
+
+### At an Enterprise
+
+The risk surface is different. The company already has a security organization; you're the AI security specialist embedded within it. A day might include:
+
+- Reviewing an AI procurement request from the finance team who wants to use a third-party document processing service built on an LLM
+- Conducting a security review of the internal AI assistant deployment, including the RAG pipeline feeding it internal documents
+- Updating the AI acceptable use policy after a new business unit starts experimenting with autonomous agents
+- Building detection rules in the SIEM for anomalous AI API usage: unusually high token counts, unexpected output patterns, evidence of system prompt manipulation
+- Running a structured red team exercise against a customer-facing AI feature before launch
+
+You have a policy to enforce, a risk register to maintain, and stakeholders who believe "but it's just the OpenAI API" is a sufficient security architecture. The job is less about building and more about governing — though the gap between what's in policy and what's actually deployed tends to be wide.
+
+### At a Consultancy
+
+You're selling expertise clients don't have in-house. Engagements vary: pre-deployment AI security assessments, LLM red team exercises, incident response for AI-specific issues, training for client security teams. You're building methodology as you go, because "standard AI security assessment" isn't yet a solved playbook.
+
+The upside is exposure — you'll see more different AI deployments in a year than most enterprise practitioners see in five. The downside is that many clients contact you after something has already gone wrong.
+
+## What They Actually Do, Across All Three
+
+Regardless of company type, the core technical activities look similar:
+
+**Threat modeling AI systems.** Taking a feature — a chatbot, a recommendation engine, a document analysis pipeline — and mapping where it can fail from a security perspective. STRIDE still applies. MITRE ATLAS extends it for ML-specific attack patterns like training data poisoning, model inversion, and adversarial examples.
+
+**Prompt injection testing.** The most common AI vulnerability class right now. Direct injection (user input manipulates model behavior), indirect injection (malicious content in retrieved documents hijacks model behavior), and multi-turn attacks (building up context across a conversation to extract restricted behavior). Testing for these requires a different approach than running a vulnerability scanner.
+
+**Supply chain review.** Who trained the base model? What was it trained on? If the team is fine-tuning, where are training artifacts stored and who can access them? Hugging Face model provenance, unsafe deserialization in ML frameworks, and data poisoning are real attack surfaces that standard tooling doesn't catch.
+
+**Output monitoring.** Building detection logic for when AI systems behave outside expected parameters — policy bypasses, PII appearing in responses, unexpected tool calls from agents, anomalous refusal patterns that might indicate model manipulation. This is SIEM work applied to AI behavioral telemetry.
+
+**Governance and compliance.** Especially in regulated industries: acceptable use policies for AI systems, procurement questionnaires for AI vendors, risk classification frameworks, and documentation for compliance teams navigating the EU AI Act or sector-specific AI guidance.
+
+## The Parts Nobody Mentions
+
+You will spend a meaningful amount of time explaining why AI security is different from traditional application security — and some of that time, the person you're explaining it to will be your manager.
+
+You will review systems where security was clearly a retrofit. You will encounter AI security assessments in the market that are regular security assessments with "AI" in the title — performed by people who haven't spent time studying how LLMs actually fail.
+
+The field is new enough that nobody has fully figured it out yet. That's both the most frustrating and the most interesting thing about working in it.

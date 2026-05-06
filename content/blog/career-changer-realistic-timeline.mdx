@@ -1,0 +1,84 @@
+---
+title: "From Career Changer to AI Security: A Realistic Timeline"
+description: What the 6–9 month path actually looks like — month by month, with honest notes on what helped, what didn't, and what hiring managers are actually looking for.
+publishedAt: 2025-04-22
+persona: career-changer
+tags: [career transition, timeline, study plan, portfolio]
+featured: false
+---
+
+Most AI security transition guides give you a list of resources. This is a timeline — what to do in what order, how long things actually take, and where people tend to get stuck.
+
+The short version: it's a 6–9 month process if you're serious about it. It is not "a few weekends." Anyone who tells you otherwise is selling a course.
+
+## Before Month 1: Settle the Baseline Question
+
+Before starting, answer one question honestly: do you have any security or technology background at all?
+
+If you've worked in IT, software development, systems administration, or a technical support role — even tangentially — you have foundation concepts that will compress your timeline. You're probably 5–6 months out.
+
+If you're coming from a completely non-technical background — healthcare, legal, finance, operations, education — expect 7–9 months. That's not a discouragement. It's an accurate timeline, and it accounts for the fact that you'll need to build technical vocabulary alongside the domain-specific content.
+
+Either way: your domain expertise is genuinely valuable in this field. Healthcare professionals who understand what protected health information means in practice are better positioned to assess AI risks in clinical settings than engineers who've only read the regulation. Finance professionals who understand how models drive credit decisions bring context that's rare. That value is real — but it comes after you've built enough technical foundation to apply it credibly.
+
+## Months 1–2: Security Fundamentals
+
+If you're coming from outside technology, don't start with AI. Start with security basics.
+
+The concepts you need: how networks communicate and where they fail, what authentication and authorization mean and how they're commonly broken, what a vulnerability is versus an exploit versus a patch, how threat modeling works at a basic level (what assets matter, what can go wrong, who benefits from attacking it), and what incident response looks like in practice.
+
+You don't need a certification at this stage. You need comprehension. Work through a structured resource — CompTIA Security+ study materials cover the right scope, even if you don't sit the exam — and test your understanding by explaining concepts out loud or in writing, not just by watching videos.
+
+Time check: if you're putting in 10–15 hours per week, this takes 6–8 weeks. Don't rush it. Gaps in security fundamentals show up prominently in technical interviews.
+
+## Months 3–4: How AI Systems Work
+
+Now you add the AI layer. The goal here is not to become an ML engineer. The goal is to understand AI systems well enough to think about how they fail.
+
+What you need to understand: what large language models are and how they generate outputs, what a system prompt is and why it matters from a security perspective, how RAG (retrieval-augmented generation) works and what data it accesses, what AI agents are and what they can do autonomously, and what fine-tuning involves and what risks it introduces.
+
+You do not need to train a model. You do not need to understand the mathematics of transformer architecture. You need to understand the system boundaries — where user input goes, what data the model can access, what actions it can take.
+
+Practical work here matters more than reading. Get API access to one of the major LLM providers (most have free tiers), build a simple application, and then try to make it do things it shouldn't. This is the most effective way to develop intuition about the attack surface.
+
+## Months 5–6: AI-Specific Security Skills
+
+This is where you build the technical skills that appear directly in AI Security Engineer job descriptions.
+
+**Prompt injection.** Read the existing research (it's publicly available), understand the distinction between direct and indirect injection, and practice testing for it. Set up a deliberately vulnerable LLM application — there are open-source examples available — and work through it systematically.
+
+**Threat modeling for AI systems.** Take the threat modeling basics from Month 2 and apply them to AI architectures. Work through MITRE ATLAS. Apply STRIDE to a RAG pipeline. The OWASP LLM Top 10 is the reference document for this — read it and map each item to a concrete attack scenario.
+
+**Output monitoring concepts.** Learn what AI behavioral telemetry looks like, what anomalies are worth flagging, and how detection logic for AI systems differs from traditional log-based detection.
+
+**One framework in depth.** Pick one of the major AI governance frameworks — NIST AI RMF or the EU AI Act — and understand it well enough to explain its requirements and how they apply to an AI deployment. This is increasingly relevant for enterprise roles.
+
+## Months 7–9: Portfolio and Job Search
+
+This phase does double duty: you're demonstrating skills and searching for work simultaneously. Don't wait until you have a "complete" portfolio — you'll be waiting indefinitely.
+
+The most useful portfolio items for AI security roles:
+
+A **threat model of a real AI application** — not a hypothetical. Pick a publicly available AI feature (a customer-facing chatbot, a content generation tool, something with a public API), scope a realistic threat model, and document your methodology and findings. One thorough threat model is more valuable than five superficial ones.
+
+A **documented red team exercise** — a structured attempt to break an AI application, with findings written up in a format that looks like a real security report. Objectives, methodology, findings, recommendations. This doesn't need to be a large engagement; it needs to demonstrate that you can think adversarially and communicate findings professionally.
+
+**Evidence of technical breadth** — a GitHub repository showing you've actually used the tools (Garak, LangSmith, or similar), even if the work is exploratory. Hiring managers understand that career changers won't have enterprise experience. They're looking for demonstrated initiative and technical capability.
+
+## What Actually Wastes Time
+
+Accumulating certifications before you have practical skills. Certifications matter, but they matter after you can demonstrate competency — not as a substitute for it.
+
+Waiting to apply until you feel "ready." The field is new enough that most hiring managers have adapted their expectations for career changers. Apply at month 7, not month 12.
+
+Studying AI security theory without building anything. Reading about prompt injection and actually testing for prompt injection are different activities with different learning outcomes.
+
+## Where Your Domain Background Fits In
+
+Your domain expertise doesn't replace the technical foundation, but it makes you better at using it.
+
+A healthcare professional who understands protected health information, HIPAA enforcement mechanisms, and the real consequences of patient data exposure is going to write better AI risk assessments for clinical AI systems than someone who only understands the technical attack surface. A finance professional who understands how credit models affect real people is going to ask better questions about AI fairness and adverse impact.
+
+The goal for months 7–9 is to frame your experience this way in applications and interviews. Not "I'm a career changer who learned some AI security" — but "I'm a healthcare compliance professional who has built AI security skills and brings direct expertise in the regulatory environment that clinical AI deployments operate in."
+
+That framing is accurate, and it's differentiating.
