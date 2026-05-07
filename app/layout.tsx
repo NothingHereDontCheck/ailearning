@@ -53,6 +53,12 @@ export default function RootLayout({
       className={`${dmSerifDisplay.variable} ${outfit.variable} ${dmMono.variable}`}
     >
       <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5290541301761290"
+        crossOrigin="anonymous"
+        strategy="afterInteractive"
+      />
+      <Script
         id="gtm"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
