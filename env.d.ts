@@ -1,3 +1,8 @@
+declare module '*.mdx?raw' {
+  const content: string
+  export default content
+}
+
 interface CloudflareEnv {
   DB: D1Database
   NEXT_CACHE_WORKERS_KV: KVNamespace

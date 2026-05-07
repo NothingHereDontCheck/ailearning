@@ -6,6 +6,12 @@ const nextConfig: NextConfig = {
   },
   // Allow MDX pages
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
+  webpack(config) {
+    // Enable ?raw imports — bundles file content as a plain string at build time.
+    // This lets lesson MDX be read without fs, so it works in Cloudflare Workers.
+    config.module.rules.push({ resourceQuery: /raw/, type: 'asset/source' })
+    return config
+  },
   // Security headers
   async headers() {
     return [
