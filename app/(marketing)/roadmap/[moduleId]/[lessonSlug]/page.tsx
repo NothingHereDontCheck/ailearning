@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { compileMDX } from 'next-mdx-remote/rsc'
+import ReactMarkdown from 'react-markdown'
 import { roadmapPhases } from '@/lib/roadmap-data'
 import { getRawLesson } from '@/lib/module-content'
 import { extractToc, slugify } from '@/lib/mdx'
@@ -74,11 +74,6 @@ export default async function LessonPage({
   const { content: rawContent, meta } = result
   const toc = extractToc(rawContent)
 
-  const { content } = await compileMDX({
-    source: rawContent,
-    components: mdxComponents,
-  })
-
   const prevLesson = lessonIndex > 0 ? mod.lessons[lessonIndex - 1] : null
   const nextLesson = lessonIndex < mod.lessons.length - 1 ? mod.lessons[lessonIndex + 1] : null
 
@@ -114,7 +109,9 @@ export default async function LessonPage({
 
       <div className="grid lg:grid-cols-[1fr_220px] gap-16 items-start">
         <div>
-          <article className="prose">{content}</article>
+          <article className="prose">
+            <ReactMarkdown components={mdxComponents}>{rawContent}</ReactMarkdown>
+          </article>
 
           {/* Prev / Next */}
           <div className="flex items-center justify-between gap-4 mt-16 pt-8 border-t border-[var(--border)]">
