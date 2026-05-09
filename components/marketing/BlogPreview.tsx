@@ -22,27 +22,6 @@ const posts = [
     desc: 'A transition story from someone who leveraged HIPAA expertise into an AI governance role. Timeline, what they studied, what actually helped.',
     readTime: '11 min read',
   },
-  {
-    slug: 'ai-security-certifications',
-    persona: 'all' as const,
-    title: "The 6 AI Security Certifications Worth Your Time (and 4 That Aren't)",
-    desc: 'Honest market value analysis of every AI-adjacent cert. Which ones hiring managers actually look for, and which exist purely to take your money.',
-    readTime: '8 min read',
-  },
-  {
-    slug: 'llm-red-teaming-crash-course',
-    persona: 'security-pro' as const,
-    title: 'LLM Red Teaming in 48 Hours: A Crash Course',
-    desc: "If you're a pentester who wants to start practicing AI red teaming this weekend, this is the post. Tools, targets, techniques — go.",
-    readTime: '12 min read',
-  },
-  {
-    slug: 'portfolio-no-security-experience',
-    persona: 'career-changer' as const,
-    title: 'Building a Portfolio With No Prior Security Experience',
-    desc: "The three projects that appear most in AI security hiring panels' notes. How to build them, write about them, and not oversell them.",
-    readTime: '10 min read',
-  },
 ]
 
 const personaStyles = {

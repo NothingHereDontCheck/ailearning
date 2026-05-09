@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { compileMDX } from 'next-mdx-remote/rsc'
+import ReactMarkdown from 'react-markdown'
 import { getAllPosts, getRawPost, extractToc, slugify } from '@/lib/mdx'
 import type React from 'react'
 
@@ -58,11 +58,6 @@ export default async function BlogPostPage({
   const { meta, content: rawContent } = result
   const toc = extractToc(rawContent)
 
-  const { content } = await compileMDX({
-    source: rawContent,
-    components: mdxComponents,
-  })
-
   return (
     <div className="section-wrap">
       <div className="max-w-[700px] mb-10">
@@ -84,7 +79,9 @@ export default async function BlogPostPage({
       <hr className="divider mb-12" />
 
       <div className="grid lg:grid-cols-[1fr_220px] gap-16 items-start">
-        <article className="prose">{content}</article>
+        <article className="prose">
+          <ReactMarkdown components={mdxComponents}>{rawContent}</ReactMarkdown>
+        </article>
 
         {toc.length > 0 && (
           <aside className="hidden lg:block sticky top-[80px]" aria-label="Table of contents">
