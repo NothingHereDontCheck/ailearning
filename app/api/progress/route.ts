@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { getSessionUser, generateId, SESSION_COOKIE } from '@/lib/auth'
+import { validateModuleId, ValidationError } from '@/lib/validation'
 
 export async function POST(request: NextRequest) {
   const sessionId = request.cookies.get(SESSION_COOKIE)?.value
@@ -15,9 +16,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
 
-  const moduleId = (body as Record<string, unknown>)?.moduleId
-  if (typeof moduleId !== 'string' || !moduleId) {
-    return NextResponse.json({ error: 'moduleId is required' }, { status: 400 })
+  let moduleId: string
+  try {
+    moduleId = validateModuleId((body as Record<string, unknown>)?.moduleId)
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof ValidationError ? err.message : 'moduleId is required' },
+      { status: 400 }
+    )
   }
 
   const { env } = getCloudflareContext()

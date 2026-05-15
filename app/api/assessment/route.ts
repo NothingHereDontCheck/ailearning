@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { getSessionUser, generateId, SESSION_COOKIE } from '@/lib/auth'
 import { calculateResult } from '@/lib/assessment-data'
+import { validateAssessmentAnswers, ValidationError } from '@/lib/validation'
 
 export async function POST(request: NextRequest) {
   let body: unknown
@@ -11,12 +12,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 })
   }
 
-  const answers = (body as Record<string, unknown>)?.answers
-  if (typeof answers !== 'object' || answers === null) {
-    return NextResponse.json({ error: 'answers is required' }, { status: 400 })
+  let typedAnswers: Record<string, number>
+  try {
+    typedAnswers = validateAssessmentAnswers((body as Record<string, unknown>)?.answers)
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof ValidationError ? err.message : 'answers is required' },
+      { status: 400 }
+    )
   }
 
-  const typedAnswers = answers as Record<string, number>
   const result = calculateResult(typedAnswers)
 
   const sessionId = request.cookies.get(SESSION_COOKIE)?.value

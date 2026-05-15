@@ -1,0 +1,16 @@
+name = "ailearning-db-proxy"
+main = "index.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Same D1 database as the main worker — read-only access enforced at
+# the application layer (only SELECT queries are executed).
+[[d1_databases]]
+binding = "DB"
+database_name = "aitrustaudit-db"
+database_id = "3e0ce152-cd1a-4df3-bba1-3778721e0b03"
+
+# PROXY_API_KEY must NEVER appear here — set it as a secret:
+#   wrangler secret put PROXY_API_KEY --config workers/db-proxy/wrangler.toml
+#
+# Callers send the key in the X-API-Key request header.

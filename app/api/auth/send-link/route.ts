@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getCloudflareContext } from '@opennextjs/cloudflare'
 import { Resend } from 'resend'
 import { createMagicToken, getOrCreateUser } from '@/lib/auth'
-
-function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-}
+import { validateEmail, ValidationError } from '@/lib/validation'
 
 export async function POST(request: NextRequest) {
   let body: unknown
@@ -15,13 +12,17 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
   }
 
-  const email = (body as Record<string, unknown>)?.email
-  if (typeof email !== 'string' || !isValidEmail(email)) {
-    return NextResponse.json({ error: 'Enter a valid email address.' }, { status: 400 })
+  let normalised: string
+  try {
+    normalised = validateEmail((body as Record<string, unknown>)?.email)
+  } catch (err) {
+    return NextResponse.json(
+      { error: err instanceof ValidationError ? err.message : 'Enter a valid email address.' },
+      { status: 400 }
+    )
   }
 
   const { env } = getCloudflareContext()
-  const normalised = email.toLowerCase()
 
   await getOrCreateUser(env.DB, normalised)
   const token = await createMagicToken(env.DB, normalised)
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
   const resend = new Resend(env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
     from: 'AITrustAudit <noreply@aitrustaudit.com>',
-    to: email,
+    to: normalised,
     subject: 'Your sign-in link for AITrustAudit',
     html: buildEmail(magicLink),
   })
