@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
   const resend = new Resend(env.RESEND_API_KEY)
   const { error } = await resend.emails.send({
     from: 'AITrustAudit <noreply@aitrustaudit.com>',
-    to: email,
+    to: normalised,
     subject: 'Confirm your subscription to The Field Dispatch',
     html: buildConfirmEmail(confirmUrl, unsubUrl),
   })
