@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   experimental: {
     // Required for @opennextjs/cloudflare
   },
+  // Limit Server Action request bodies to mitigate CVE-2026-23870: a crafted
+  // POST body to any React Server Function endpoint can cause the Flight
+  // deserializer to spin CPU until the worker is killed (DoS). Capping body
+  // size bounds the worst-case parsing cost. Default is 1 MB.
+  serverActions: {
+    bodySizeLimit: '128kb',
+  },
   // Allow MDX pages
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   webpack(config) {
