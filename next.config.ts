@@ -48,6 +48,19 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // RSC cache partitioning — tell shared caches (CDNs, proxies) to keep
+      // separate entries for RSC payloads vs full HTML responses.
+      // Mitigates RSC cache-poisoning where a poisoned entry could serve a
+      // component payload to visitors expecting a full HTML page.
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'Vary',
+            value: 'RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Url',
+          },
+        ],
+      },
       // API routes: also block cross-origin fetches via CORS
       {
         source: '/api/(.*)',
